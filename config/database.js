@@ -11,7 +11,7 @@ module.exports = {
     'connection2': {
         'host': '192.168.23.22',
         'port': '3306',
-        'user': 'fb_history_fb_post',
-        'password': 'eItgy17dUW9lBhPRQfpD'
+        'user': 'crawler-data-comment-fb-branch',
+        'password': 'Ta4qD0wcxEiZ6st3jUo5'
     }
 };
