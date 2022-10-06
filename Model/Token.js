@@ -1,7 +1,7 @@
 "use  strict";
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection2);
+const connection = mysql.createConnection(dbconfig.connection);
 
 class Token{
     constructor(token){
@@ -42,10 +42,8 @@ class ManagerToken{
 
         query += ` group by User`;
 
-        console.log("query: ", query);
         connection.query(query, function(err, result){
             if(err){
-                console.log("err: ", err);
                 callback(err, null);
                 return;
             }
@@ -67,11 +65,26 @@ class ManagerToken{
         });
     }
 
+    static GetTokenByUser(userName, callback){
+        let query = `Select id, LEFT(FanPageName , 15) as FanPageName from FacebookDb.fb_tokens where User = ?`;
+
+        connection.query(query, [userName],  function(err, result){
+            if(err){
+                callback(err, null);
+                return;
+            }
+
+            return callback(null, result);
+        });
+    }
+
     static GetListPageBeenChangedPassword(manager, callback){
-        let query = `Select * from FacebookDb.fb_tokens where StatusToken = 101`;
+        let query = `Select User from FacebookDb.fb_tokens where StatusToken = 101`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
+
+        query += ` and User is not NULL group by User;`;
 
         connection.query(query, function(err, result){
             if(err){

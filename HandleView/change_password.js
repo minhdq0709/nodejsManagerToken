@@ -9,7 +9,7 @@ function getCookie(cname) {
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
 
-    for(let i = 0; i <ca.length; i++) {
+    for(let i = 0; i < ca.length; i++) {
       let c = ca[i];
 
       while (c.charAt(0) == ' ') {
@@ -48,9 +48,8 @@ function LoadData() {
                 result.Mess.forEach(element => {
                     html += "<tr>";
                     html +=     "<td>" + element.User + "</td>";
-                    html +=     "<td>" + element.FanPageName + "</td>";
                     html +=     "<td class='text-center'>";
-                    html +=         "<i style='cursor: pointer;' class='glyphicon glyphicon-pencil' onclick=Edit(" + element.Id + ")></i>";
+                    html +=         "<i style='cursor: pointer;' class='glyphicon glyphicon-pencil' onclick=Edit('" + element.User + "')></i>";
                     html +=     "</td>";
                     html += "</tr>";
                 });
@@ -59,7 +58,6 @@ function LoadData() {
             // Show data on table
             $('#bodyTable').html(html);
             $('#example').DataTable({
-                "searching": false,
                 "ordering": false
             });
         },
@@ -69,22 +67,23 @@ function LoadData() {
     });
 }
 
-function Edit(id){
+function Edit(userName){
     $.ajax({
-        url: "/GetTokenById/" + id,
+        url: "/GetTokenByUser/" + userName,
         type: "GET",
         cache: false,
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (result) {
+            console.log("result: ", result);
             if(result.status == 200){
                 if(!result.Mess.length){
                     $.notify("Token ko tồn tại !!!", "warn");
                     return;
                 }
 
-                ShowDataToTextBox(result.Mess[0]);
-                OpenModal();
+                // ShowDataToTextBox(result.Mess[0]);
+                 OpenModal();
             }
         },
         error: function (errormessage) {
