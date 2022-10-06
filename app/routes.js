@@ -118,6 +118,25 @@ module.exports = function (app, passport) {
 		});
 	});
 
+	app.get('/GetTokenByUser/:userName', function (req, res) {
+		let userName = req.params.userName;
+
+		ManagerToken.GetTokenByUser(userName, (err, data) => {
+			let jsonData = {};
+
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = data;
+			}
+
+			res.json(jsonData);
+		});
+	});
+
 	app.get('/change_password', isLoggedIn, function (req, res) {
 		res.render('change_password.ejs');
 	});

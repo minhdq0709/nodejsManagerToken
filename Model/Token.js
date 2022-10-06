@@ -16,9 +16,9 @@ class Token{
 
 class ManagerToken{
     static Create(token, callback){
-        let query = "Insert into token.fb_token(Token, Note, StatusToken, Manager, User, FanPageName) values ?";
+        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName) values ?";
         let values = [
-            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName]
+            [token.Token, token.Note, 1, social_index_v2.Manager, token.User, token.FanPageName]
         ];
 
         connection.query(query, [values], function(err, result){
@@ -31,7 +31,7 @@ class ManagerToken{
     }
 
     static GetListUserDie(manager, statusToken, callback){
-        let query = `Select User, group_concat(id SEPARATOR ', ') as Id from Token.fb_token where 1 = 1`;
+        let query = `Select User, group_concat(id SEPARATOR ', ') as Id from FacebookDb.fb_tokens where 1 = 1`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
@@ -53,7 +53,7 @@ class ManagerToken{
     }
 
     static GetTokenById(id, callback){
-        let query = `Select * from Token.fb_token where Id = ?`;
+        let query = `Select * from FacebookDb.fb_tokens where Id = ?`;
 
         connection.query(query, [id],  function(err, result){
             if(err){
@@ -65,11 +65,26 @@ class ManagerToken{
         });
     }
 
+    static GetTokenByUser(userName, callback){
+        let query = `Select id, LEFT(FanPageName , 15) as FanPageName from FacebookDb.fb_tokens where User = ?`;
+
+        connection.query(query, [userName],  function(err, result){
+            if(err){
+                callback(err, null);
+                return;
+            }
+
+            return callback(null, result);
+        });
+    }
+
     static GetListPageBeenChangedPassword(manager, callback){
-        let query = `Select * from Token.fb_token where StatusToken = 101`;
+        let query = `Select User from FacebookDb.fb_tokens where StatusToken = 101`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
+
+        query += ` and User is not NULL group by User;`;
 
         connection.query(query, function(err, result){
             if(err){
@@ -82,7 +97,7 @@ class ManagerToken{
     }
 
     static UpdateStatusToken(idList, statusToken, callback){
-        let query = `UPDATE token.fb_token SET StatusToken = ${statusToken} WHERE User in (?)`;
+        let query = `UPDATE FacebookDb.fb_tokens SET StatusToken = ${statusToken} WHERE User in (?)`;
 
         connection.query(query, [idList], function(err, result){
             if(err){
@@ -94,7 +109,7 @@ class ManagerToken{
     }
 
     static UpdatePasswordByUseName(userName, password, callback){
-        let query = `UPDATE token.fb_token SET Note = '${password}' WHERE User = '${userName}';`;
+        let query = `UPDATE FacebookDb.fb_tokens SET Note = '${password}' WHERE User = '${userName}';`;
         
         connection.query(query, function(err, result){
             if(err){
@@ -106,7 +121,7 @@ class ManagerToken{
     }
 
     static UpdateTokenById(token, id, callback){
-        let query = `UPDATE token.fb_token SET Token = '${token}', StatusToken = 1 WHERE Id = '${id}';`;
+        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', StatusToken = 1 WHERE Id = '${id}';`;
         
         connection.query(query, function(err, result){
             if(err){
