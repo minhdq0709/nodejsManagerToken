@@ -10,21 +10,22 @@ function getCookie(cname) {
     let ca = decodedCookie.split(';');
 
     for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
+        let c = ca[i];
 
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
 
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
 
     return "";
 }
 
 function LoadData() {
+    /* Clear table */
     if ($.fn.DataTable.isDataTable('#example')) {
         $('#example').DataTable().destroy();
     }
