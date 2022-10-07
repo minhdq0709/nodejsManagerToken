@@ -188,10 +188,30 @@ module.exports = function (app, passport) {
 	app.post('/updateTokenById', function (req, res) {
 		let data = req.body;
 
-		ManagerToken.UpdateTokenById(data.Token, data.Id, (err, data) => {
+		ManagerToken.UpdateTokenById(data.Token, data.Id, (err, result) => {
 			let jsonData = {};
 
 			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = "Thành công";
+			}
+
+			res.json(jsonData);
+		});
+	});
+
+	app.post('/updateListToken', function (req, res) {
+		let data = req.body;
+
+		ManagerToken.UpdateListToken(data, (err, result) => {
+			let jsonData = {};
+
+			if (err) {
+				console.log("err: ", err);
 				jsonData.status = 500;
 				jsonData.Mess = "Có lỗi xảy ra";
 			}

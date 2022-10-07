@@ -1,7 +1,7 @@
 "use  strict";
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection);
+const connection = mysql.createConnection(dbconfig.connection2);
 
 class Token{
     constructor(token){
@@ -18,7 +18,7 @@ class ManagerToken{
     static Create(token, callback){
         let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName) values ?";
         let values = [
-            [token.Token, token.Note, 1, social_index_v2.Manager, token.User, token.FanPageName]
+            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName]
         ];
 
         connection.query(query, [values], function(err, result){
@@ -121,7 +121,22 @@ class ManagerToken{
     }
 
     static UpdateTokenById(token, id, callback){
-        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', StatusToken = 1 WHERE Id = '${id}';`;
+        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', StatusToken = 1 WHERE Id = ${id};`;
+        
+        connection.query(query, function(err, result){
+            if(err){
+                return callback(err, null);
+            }
+
+            return callback(null, result);
+        });
+    }
+
+    static UpdateListToken(listToken, callback){
+        let query = ``;
+        listToken.forEach(elment=> {
+            query += `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}', StatusToken = 1 WHERE Id = ${elment.Id};`;
+        })
         
         connection.query(query, function(err, result){
             if(err){

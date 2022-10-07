@@ -102,10 +102,13 @@ function Save(){
         success: function (result) {
            if(result.status == 200){
                 $.notify("Thành công !!!", "success");
-                CloseModal();
+                Close();
+
+                return;
            }
            else{
                 $.notify("Có lỗi xảy ra !!!", "error");
+                return;
            }
         },
         error: function (errormessage) {

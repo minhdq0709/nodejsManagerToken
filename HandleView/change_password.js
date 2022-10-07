@@ -9,13 +9,8 @@ function getCookie(cname) {
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
 
-<<<<<<< HEAD
-    for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-=======
     for(let i = 0; i < ca.length; i++) {
       let c = ca[i];
->>>>>>> 5b6bc336abb2bb5a20a1572baab134da691712b0
 
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -88,8 +83,8 @@ function Edit(userName){
                     return;
                 }
 
-                // ShowDataToTextBox(result.Mess[0]);
-                 OpenModal();
+                ShowDataToTextBox(result.Mess, userName);
+                OpenModal();
             }
         },
         error: function (errormessage) {
@@ -98,23 +93,36 @@ function Edit(userName){
     });
 }
 
-function ShowDataToTextBox(data){
-    $("#txtUserName").val(data.User);
-    $("#txtPassword").val(data.Note);
-    $("#txtNamePage").val(data.FanPageName);
-    $("#txtToken").val(data.Token);
-    $("#txtId").val(data.Id);
+function ShowDataToTextBox(data, userName){
+    let html = ``;
+    let countRow = data.length;
+    $("#txtUserName").val(userName);
+    $("#txtNumberRow").val(countRow);
+
+    if(countRow > 0){
+        for(let i = 0; i < countRow; ++i){
+            html += `<div class='form-group'>`
+            html +=     `<label class='control-label col-sm-2 left-style' id='lbNamePage'>${data[i].FanPageName}:</label>`
+            html +=     `<div class='col-sm-10'>`
+            html +=         `<input id='txtIdToken${i}' style='display: none;' value='${data[i].id}'>`
+            html +=         `<input class='form-control' id='txtToken${i}'>`
+            html +=     `</div>`
+            html += `</div>`
+        }
+    }
+
+    $('#dynamicForm').html(html);
 }
 
 function Save(){
     let data = GetDataOnModal();
-    if(!data.Token.length){
-        $.notify("Xin mời nhập lại token !!!", "warn");
+    if(data.filter(x=> !x.Token).length > 0){
+        $.notify("Trường token không được để trống !!!", "warn");
         return;
     }
 
     $.ajax({
-        url: "/updateTokenById",
+        url: "/updateListToken",
         data: JSON.stringify(data),
         type: "POST",
         cache: false,
@@ -137,11 +145,17 @@ function Save(){
 }
 
 function GetDataOnModal(){
-    return {
-        Token: $('#txtToken').val(),
-        Id: $('#txtId').val(),
-        StatusToken: 1
-    };
+    let arrData = [];
+    let rowCount = $("#txtNumberRow").val();
+
+    for(let i = 0; i < rowCount; ++i){
+        arrData.push({
+            Token: $('#txtToken' + i).val(),
+            Id: +$('#txtIdToken' + i).val()
+        })
+    }
+
+    return arrData;
 }
 
 function Close(){
