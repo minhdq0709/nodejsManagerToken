@@ -1,4 +1,5 @@
 "use strcit"
+let _arrId = [];
 
 $(document).ready(function () {
     LoadData();
@@ -52,6 +53,7 @@ function LoadData() {
                     html +=     "<td class='text-center'>";
                     html +=         "<i style='cursor: pointer;' class='glyphicon glyphicon-pencil' onclick=Edit('" + element.User + "')></i>";
                     html +=     "</td>";
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString() + '\', true)"></td>';
                     html += "</tr>";
                 });
             }
@@ -178,3 +180,47 @@ function CloseModal(){
 function OpenModal(){
     $('#myModal').modal('show');
 }
+
+function GetValueCheckBox(values){
+    if(_arrId.includes(values)){
+        _arrId = _arrId.filter(item => item != values);
+    }
+    else{
+        _arrId.push(values);
+    }
+}
+
+function Save(){
+    if(!_arrId.length){
+        $.notify("Bạn chưa chọn user nào !!!", "warn");
+        return;
+    }
+
+    $.ajax({
+        url: "/updateStatusToken/" + UserDieForever,
+        data: JSON.stringify({
+            mess: _arrId
+        }),
+        type: "POST",
+        cache: false,
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            if (result.status != 200) {
+                $.notify("Có lỗi xảy ra !!!", "error");
+                return;
+            }
+
+            $.notify("Thành công !!!", "success");
+            LoadData();
+            
+        },
+        error: function (errormessage) {
+        }
+    });
+
+    /* Free memory */
+    _arrId.length = 0;
+}
+
+

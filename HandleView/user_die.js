@@ -178,7 +178,7 @@ function UpdateStatusTokenBlocked(){
                 reject(false);
             }
         });
-      });
+    });
 }
 
 async function Save(){

@@ -1,7 +1,7 @@
 "use  strict";
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection2);
+const connection = mysql.createConnection(dbconfig.connection);
 
 class Token{
     constructor(token){
