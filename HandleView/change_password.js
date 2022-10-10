@@ -190,7 +190,7 @@ function GetValueCheckBox(values){
     }
 }
 
-function Save(){
+function Save1(){
     if(!_arrId.length){
         $.notify("Bạn chưa chọn user nào !!!", "warn");
         return;
