@@ -1,7 +1,7 @@
 "use  strict";
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection2);
+const connection = mysql.createConnection(dbconfig.connection3);
 
 class Token{
     constructor(token){
@@ -135,7 +135,12 @@ class ManagerToken{
     static UpdateListToken(listToken, callback){
         let query = ``;
         listToken.forEach(elment=> {
-            query += `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}', StatusToken = 1 WHERE Id = ${elment.Id};`;
+            if(elment.Token.length){
+                query += `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}', StatusToken = 1 WHERE Id = ${elment.Id};`;
+            }
+            else{
+                query += `UPDATE FacebookDb.fb_tokens SET StatusToken = 105 WHERE Id = ${elment.Id};`;
+            }
         })
         
         connection.query(query, function(err, result){

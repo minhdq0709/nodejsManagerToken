@@ -118,10 +118,6 @@ function ShowDataToTextBox(data, userName){
 
 function Save(){
     let data = GetDataOnModal();
-    if(data.filter(x=> !x.Token).length > 0){
-        $.notify("Trường token không được để trống !!!", "warn");
-        return;
-    }
 
     $.ajax({
         url: "/updateListToken",
