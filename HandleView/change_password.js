@@ -48,13 +48,13 @@ function LoadData() {
             let html = "";
             if(result.status == 200){
                 result.Mess.forEach(element => {
-                    html += "<tr>";
-                    html +=     "<td>" + element.User + "</td>";
-                    html +=     "<td class='text-center'>";
-                    html +=         "<i style='cursor: pointer;' class='glyphicon glyphicon-pencil' onclick=Edit('" + element.User + "')></i>";
-                    html +=     "</td>";
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString() + '\', true)"></td>';
-                    html += "</tr>";
+                    html += '<tr>';
+                    html +=     '<td>' + element.User + '</td>';
+                    html +=     '<td class=\'text-center\'>';
+                    html +=         '<i style=\'cursor: pointer;\' class=\'glyphicon glyphicon-pencil\' onclick=Edit(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\')></i>';
+                    html +=     '</td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', true)"></td>';
+                    html += '</tr>';
                 });
             }
 

@@ -47,18 +47,21 @@ function LoadData() {
         success: function (result) {
             let html = '';
             if(result.status == 200){
+                
                 result.Mess.forEach(element => {
+                    console.log("element.User: ", element.User.toString().replace(/(\r\n|\n|\r)/gm, ''));
                     html += '<tr>';
                     html +=     '<td>' + element.User + '</td>';
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString() + '\', true)"></td>';
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString() + '\', false)"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', true)"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', false)"></td>';
                     html +=     '<td class="text-center">';
-                    html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-pencil" onclick="Edit(\'' + element.User.toString() + '\')"></i>';
+                    html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-pencil" onclick="Edit(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\')"></i>';
                     html +=     '</td>';
                     html += '</tr>';
                 });
             }
 
+            console.log("html: ", html);
             // Show data on table
             $('#bodyTable').html(html);
             $('#example').DataTable({
@@ -73,6 +76,7 @@ function LoadData() {
 }
 
 function Edit(userName){
+    debugger;
     $('#txtUserName').val(userName);
     $('#txtPassword').val('');
     $('#myModal').modal('show');

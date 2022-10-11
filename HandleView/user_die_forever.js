@@ -49,7 +49,7 @@ function LoadData() {
                 result.Mess.forEach(element => {
                     html += "<tr>";
                     html +=     "<td>" + element.User + "</td>";
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User + '\')"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\')"></td>';
                     html += '</tr>';
                 });
             }

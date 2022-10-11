@@ -15,5 +15,12 @@ module.exports = {
         'user': 'crawler-data-comment-fb-branch',
         'password': 'Ta4qD0wcxEiZ6st3jUo5',
         'multipleStatements': true
+    },
+    'connection3': {
+        'host': '192.168.23.22',
+        'port': '3306',
+        'user': 'minhdq',
+        'password': 'wgy2FdMt0rXfcmCWGSqa',
+        'multipleStatements': true
     }
 };

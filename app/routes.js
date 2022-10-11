@@ -66,7 +66,6 @@ module.exports = function (app, passport) {
 
 		ManagerToken.GetListUserDie(manager, statusToken, (err, data) => {
 			let jsonData = {};
-
 			if (err) {
 				jsonData.status = 500;
 				jsonData.Mess = "Có lỗi xảy ra";
