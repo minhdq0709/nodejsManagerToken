@@ -66,7 +66,7 @@ class ManagerToken{
     }
 
     static GetTokenByUser(userName, callback){
-        let query = `Select id, LEFT(FanPageName , 15) as FanPageName from FacebookDb.fb_tokens where User = ?`;
+        let query = `Select id, FanPageName from FacebookDb.fb_tokens where User = ? and StatusToken = 101;`;
 
         connection.query(query, [userName],  function(err, result){
             if(err){
@@ -97,11 +97,11 @@ class ManagerToken{
     }
 
     static UpdateStatusToken(idList, statusToken, callback){
-        let query = `UPDATE FacebookDb.fb_tokens SET StatusToken = ${statusToken} WHERE User in (?)`;
-
+        let query = `UPDATE FacebookDb.fb_tokens SET StatusToken = ${statusToken} WHERE User in (?) and statustoken != 105;`;
+        
         connection.query(query, [idList], function(err, result){
             if(err){
-               return callback(err, null);
+                return callback(err, null);
             }
 
             return callback(null, result);

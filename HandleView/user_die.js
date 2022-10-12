@@ -47,9 +47,7 @@ function LoadData() {
         success: function (result) {
             let html = '';
             if(result.status == 200){
-                
                 result.Mess.forEach(element => {
-                    console.log("element.User: ", element.User.toString().replace(/(\r\n|\n|\r)/gm, ''));
                     html += '<tr>';
                     html +=     '<td>' + element.User + '</td>';
                     html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', true)"></td>';
@@ -61,7 +59,6 @@ function LoadData() {
                 });
             }
 
-            console.log("html: ", html);
             // Show data on table
             $('#bodyTable').html(html);
             $('#example').DataTable({

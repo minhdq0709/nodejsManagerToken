@@ -78,7 +78,6 @@ function Edit(userName){
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (result) {
-            console.log("result: ", result);
             if(result.status == 200){
                 if(!result.Mess.length){
                     $.notify("Token ko tồn tại !!!", "warn");
@@ -104,8 +103,8 @@ function ShowDataToTextBox(data, userName){
     if(countRow > 0){
         for(let i = 0; i < countRow; ++i){
             html += `<div class='form-group'>`
-            html +=     `<label class='control-label col-sm-2 left-style' id='lbNamePage'>${data[i].FanPageName}:</label>`
-            html +=     `<div class='col-sm-10'>`
+            html +=     `<label class='control-label col-sm-4 left-style' id='lbNamePage'>${data[i].FanPageName}:</label>`
+            html +=     `<div class='col-sm-8'>`
             html +=         `<input id='txtIdToken${i}' style='display: none;' value='${data[i].id}'>`
             html +=         `<input class='form-control' id='txtToken${i}'>`
             html +=     `</div>`

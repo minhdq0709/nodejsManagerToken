@@ -21,7 +21,7 @@ module.exports = function (app, passport) {
 				'cookiename', 
 				req.body.username, 
 				{ 
-					maxAge: 900000,
+					maxAge: 365*60*60*1000,
 					httpOnly: false 
 				}
 			);
@@ -210,7 +210,6 @@ module.exports = function (app, passport) {
 			let jsonData = {};
 
 			if (err) {
-				console.log("err: ", err);
 				jsonData.status = 500;
 				jsonData.Mess = "Có lỗi xảy ra";
 			}
