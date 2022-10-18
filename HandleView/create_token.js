@@ -76,11 +76,6 @@ function Save(){
         return;
     }
 
-    if(!data.Note.length){
-        $.notify("Nhập mật khẩu !!!", "warn");
-        return;
-    }
-
     if(!data.FanPageName.length){
         $.notify("Nhập tên fanpage !!!", "warn");
         return;

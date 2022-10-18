@@ -18,11 +18,11 @@ module.exports = function (app, passport) {
 	}),
 		function (req, res) {
 			res.cookie(
-				'cookiename', 
+				'cookiename',
 				req.body.username, 
 				{ 
-					maxAge: 365*60*60*1000,
-					httpOnly: false 
+					maxAge: 365 * 60 * 60 * 1000, // a year
+					httpOnly: false
 				}
 			);
 

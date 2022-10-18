@@ -9,6 +9,7 @@ module.exports = {
         'multipleStatements': true
     },
     'database': 'token',
+    // server
     'connection2': {
         'host': '192.168.23.22',
         'port': '3306',
@@ -16,6 +17,7 @@ module.exports = {
         'password': 'Ta4qD0wcxEiZ6st3jUo5',
         'multipleStatements': true
     },
+    // local
     'connection3': {
         'host': '192.168.23.22',
         'port': '3306',
