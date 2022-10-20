@@ -151,6 +151,23 @@ class ManagerToken{
             return callback(null, result);
         });
     }
+
+    static GetListTotalAdminOfPage(callback){
+        let query = `select a.FanPageName, count(*) as totalAdmin from (
+                        select FanPageName, User
+                            from FacebookDb.fb_tokens
+                        where StatusToken in(1, 101, 100) group by FanPageName, User
+                    ) as a group by a.FanPageName having totalAdmin < 4 order by totalAdmin;`
+
+        connection.query(query, function(err, result){
+            if(err){
+
+                return callback(err, null);
+            }
+
+            return callback(null, result);
+        });
+    }
 }
 
 module.exports = {Token, ManagerToken};

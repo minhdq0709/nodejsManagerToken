@@ -26,12 +26,33 @@ module.exports = function (app, passport) {
 				}
 			);
 
-			res.redirect('/user_die');
+			return res.redirect('/home');
 		}
 	);
 
 	app.get('/user_die', isLoggedIn, function (req, res) {
 		res.render('user_die.ejs');
+	});
+
+	app.get('/home', isLoggedIn, function (req, res) {
+		res.render('home.ejs');
+	});
+
+	app.get('/getListToltalAdminOfPage', isLoggedIn, function (req, res) {
+		ManagerToken.GetListTotalAdminOfPage((err, result)=> {
+			let jsonData = {};
+
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = result;
+			}
+
+			return res.json(jsonData);
+		});
 	});
 
 	app.get('/user_block_forever', isLoggedIn, function (req, res) {
