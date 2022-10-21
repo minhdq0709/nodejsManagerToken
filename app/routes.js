@@ -41,7 +41,6 @@ module.exports = function (app, passport) {
 	app.get('/getListToltalAdminOfPage', isLoggedIn, function (req, res) {
 		ManagerToken.GetListTotalAdminOfPage((err, result)=> {
 			let jsonData = {};
-			console.log("err: ", err);
 			if (err) {
 				jsonData.status = 500;
 				jsonData.Mess = "Có lỗi xảy ra";
@@ -50,7 +49,7 @@ module.exports = function (app, passport) {
 				jsonData.status = 200;
 				jsonData.Mess = result;
 			}
-			console.log("jsonData: ", jsonData);
+
 			return res.json(jsonData);
 		});
 	});

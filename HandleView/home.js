@@ -44,7 +44,6 @@ function LoadData(){
         success: function (result) {
             let html = '';
             if(result.status == 200){
-                console.log("result: ", result);
                 result.Mess.forEach(element => {
                     html += '<tr>';
                     html +=     '<td>' + element.FanPageName + '</td>';
