@@ -64,7 +64,7 @@ function LoadData() {
 }
 
 function Save(){
-    let data = getObjectOnModal();
+    let data = getObjectOnModal();;
 
     if(!data.Manager.length){
         $.notify("Phiên đăng nhập hết hạn, bạn hãy đăng nhập lại !!!", "warn");
@@ -102,7 +102,7 @@ function Save(){
         success: function (result) {
            if(result.status == 200){
                 $.notify("Thành công !!!", "success");
-                Close();
+                ClearTextBoxSpecial();
 
                 return;
            }
@@ -115,11 +115,6 @@ function Save(){
             alert(errormessage.responseText);
         }
     });
-}
-
-function Close(){
-    ClearTextBoxSpecial();
-    CloseModal();
 }
 
 function getObjectOnModal(){
@@ -137,6 +132,8 @@ function getObjectOnModal(){
 function ClearTextBoxSpecial(){
     $('#txtNamePage').val('');
     $('#txtToken').val('');
+    $('#txtLinkPage').val('');
+    $('#txtLinkPage').val('')
 }
 
 function ClearFullTextBox(){
@@ -144,6 +141,7 @@ function ClearFullTextBox(){
     $('#txtNamePage').val('');
     $('#txtToken').val('');
     $('#txtPassword').val('');
+    $('#txtLinkPage').val('')
 }
 
 function CloseModal(){
@@ -151,3 +149,7 @@ function CloseModal(){
 }
 
 
+function Close(){
+    CloseModal();
+    ClearFullTextBox();
+}

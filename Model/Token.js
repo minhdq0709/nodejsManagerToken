@@ -8,6 +8,7 @@ class Token{
         this.Token = token.Token,
         this.Note = token.Note,
         this.StatusToken = token.StatusToken,
+        this.FanPageLink = token.FanPageLink,
         this.Manager = token.Manager,
         this.User = token.User,
         this.FanPageName = token.FanPageName

@@ -64,6 +64,7 @@ module.exports = function (app, passport) {
 
 	app.post('/create_token', isLoggedIn, function (req, res) {
 		const token = new Token(req.body);
+
 		ManagerToken.Create(token, (err, result)=> {
 			let jsonData = {};
 
