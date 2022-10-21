@@ -48,7 +48,7 @@ function LoadData(){
                     html += '<tr>';
                     html +=     '<td>' + element.FanPageName + '</td>';
                     html +=     '<td>';
-                    html +=         '<a href="' + element.Link + '">' + element.Link + '</a>';
+                    html +=         '<a href="' + element.Link + '" target="_blank">' + element.Link + '</a>';
                     html +=     '</td>';
                     html +=     '<td>' + element.UserName + '</td>';
                     html +=     '<td>' + element.TotalAdmin + '</td>';
