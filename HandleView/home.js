@@ -44,10 +44,15 @@ function LoadData(){
         success: function (result) {
             let html = '';
             if(result.status == 200){
+                console.log("result: ", result);
                 result.Mess.forEach(element => {
                     html += '<tr>';
                     html +=     '<td>' + element.FanPageName + '</td>';
-                    html +=     '<td>' + element.totalAdmin + '</td>';
+                    html +=     '<td>';
+                    html +=         '<a href="' + element.Link + '">' + element.Link + '</a>';
+                    html +=     '</td>';
+                    html +=     '<td>' + element.UserName + '</td>';
+                    html +=     '<td>' + element.TotalAdmin + '</td>';
                     html += '</tr>';
                 });
             }

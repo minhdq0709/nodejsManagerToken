@@ -16,9 +16,9 @@ class Token{
 
 class ManagerToken{
     static Create(token, callback){
-        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName) values ?";
+        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName, FanPageLink) values ?";
         let values = [
-            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName]
+            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName, token.FanPageLink]
         ];
 
         connection.query(query, [values], function(err, result){
@@ -153,15 +153,16 @@ class ManagerToken{
     }
 
     static GetListTotalAdminOfPage(callback){
-        let query = `select a.FanPageName, count(*) as totalAdmin from (
-                        select FanPageName, User
-                            from FacebookDb.fb_tokens
-                        where StatusToken in(1, 101, 100) group by FanPageName, User
-                    ) as a group by a.FanPageName having totalAdmin < 4 order by totalAdmin;`
+        let query = `SELECT A.FanPageName, max(A.FanPageLink ) as Link, 
+                            max(A.manager) as UserName, count(A.User) as TotalAdmin
+                        FROM FacebookDb.fb_tokens as A 
+                    where StatusToken in(1, 101, 100) 
+                        group by FanPageName 
+                        having TotalAdmin < 4
+                        order by TotalAdmin;`
 
         connection.query(query, function(err, result){
             if(err){
-
                 return callback(err, null);
             }
 

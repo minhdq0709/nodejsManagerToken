@@ -81,6 +81,11 @@ function Save(){
         return;
     }
 
+    if(!data.FanPageLink.length){
+        $.notify("Nhập link fanpage !!!", "warn");
+        return;
+    }
+
     if(!data.Token.length){
         $.notify("Nhập token !!!", "warn");
         return;
@@ -121,6 +126,7 @@ function getObjectOnModal(){
     return {
         User: $('#txtUserName').val(),
         FanPageName: $('#txtNamePage').val(),
+        FanPageLink: $('#txtLinkPage').val(),
         Token: $('#txtToken').val(),
         Note: $('#txtPassword').val(),
         Manager: getCookie("cookiename"),
