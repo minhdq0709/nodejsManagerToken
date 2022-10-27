@@ -1,7 +1,13 @@
 "use  strict";
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection2);
+const connection = mysql.createConnection(dbconfig.connection);
+const moment = require('moment');
+const USER_LIVE = 1;
+const USER_DIE = 100;
+const CHANGE_PASSWORD = 101;
+const USER_DIE_FOREVER = 102;
+const formatTime = 'YYYY-MM-DD HH:mm:ss';
 
 class Token{
     constructor(token){
@@ -11,15 +17,16 @@ class Token{
         this.FanPageLink = token.FanPageLink,
         this.Manager = token.Manager,
         this.User = token.User,
-        this.FanPageName = token.FanPageName
+        this.FanPageName = token.FanPageName,
+        this.Cookies = token.Cookies
     }
 }
 
 class ManagerToken{
     static Create(token, callback){
-        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName, FanPageLink, Datetime_tokendie) values ?";
+        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName, FanPageLink, Datetime_tokendie, Cookies) values ?";
         let values = [
-            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName, token.FanPageLink, new Date()]
+            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName, token.FanPageLink, new Date(), token.Cookies]
         ];
 
         connection.query(query, [values], function(err, result){
@@ -32,7 +39,7 @@ class ManagerToken{
     }
 
     static GetListUserDie(manager, statusToken, callback){
-        let query = `Select User, group_concat(id SEPARATOR ', ') as Id from FacebookDb.fb_tokens where 1 = 1`;
+        let query = `Select User, min(Token_type) as typeToken from FacebookDb.fb_tokens where 1 = 1`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
@@ -89,7 +96,6 @@ class ManagerToken{
 
         connection.query(query, function(err, result){
             if(err){
-
                 return callback(err, null);
             }
 
@@ -97,10 +103,17 @@ class ManagerToken{
         });
     }
 
-    static UpdateStatusToken(idList, statusToken, callback){
-        let query = `UPDATE FacebookDb.fb_tokens SET StatusToken = ${statusToken} WHERE User in (?) and statustoken != 105;`;
-        
-        connection.query(query, [idList], function(err, result){
+    static UpdateStatusToken(listToken, statusToken, callback){
+        let query = ``;
+        listToken.forEach(x=> {
+            if(statusToken == USER_DIE || statusToken == USER_DIE_FOREVER){
+                query += `UPDATE FacebookDb.fb_tokens SET StatusToken = ${statusToken}, Datetime_tokendie = ? WHERE User in (?) and statustoken != 105;`
+            }
+
+
+        });
+
+        connection.query(query, [new Date(), idList], function(err, result){
             if(err){
                 return callback(err, null);
             }
@@ -122,7 +135,7 @@ class ManagerToken{
     }
 
     static UpdateTokenById(token, id, callback){
-        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', StatusToken = 1 WHERE Id = ${id};`;
+        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', StatusToken = 1, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE Id = ${id};`;
         
         connection.query(query, function(err, result){
             if(err){
@@ -137,7 +150,7 @@ class ManagerToken{
         let query = ``;
         listToken.forEach(elment=> {
             if(elment.Token.length){
-                query += `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}', StatusToken = 1 WHERE Id = ${elment.Id};`;
+                query += `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}', StatusToken = 1, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE Id = ${elment.Id};`;
             }
             else{
                 query += `UPDATE FacebookDb.fb_tokens SET StatusToken = 105 WHERE Id = ${elment.Id};`;
@@ -159,7 +172,7 @@ class ManagerToken{
                         FROM FacebookDb.fb_tokens as A 
                     where StatusToken in(1, 101, 100) 
                     group by FanPageName 
-                    having TotalAdmin < 4
+                        having TotalAdmin < 4
                     order by TotalAdmin;`
 
         connection.query(query, function(err, result){

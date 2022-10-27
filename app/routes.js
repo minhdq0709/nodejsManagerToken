@@ -21,7 +21,7 @@ module.exports = function (app, passport) {
 				'cookiename',
 				req.body.username, 
 				{ 
-					maxAge: 365 * 60 * 60 * 1000, // a year
+					maxAge: 365 * 24 * 60 * 60 * 1000, // a year
 					httpOnly: false
 				}
 			);
@@ -170,6 +170,7 @@ module.exports = function (app, passport) {
 		let listUserName = req.body.mess;
 		let statusToken = +req.params.statusToken;
 
+		console.log("listUserName: ", listUserName);
 		ManagerToken.UpdateStatusToken(listUserName, statusToken, (err, data) => {
 			let jsonData = {};
 

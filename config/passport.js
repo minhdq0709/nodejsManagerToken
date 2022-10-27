@@ -1,8 +1,4 @@
-// config/passport.js
-
-// load all the things we need
-var LocalStrategy   = require('passport-local').Strategy;
-
+var LocalStrategy = require('passport-local').Strategy;
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('./database');
@@ -28,11 +24,14 @@ module.exports = function(passport) {
         },
         function(req, username, password, done) {
             connection.query("SELECT * FROM token.users WHERE username = ?",[username], function(err, rows) {
-                if (err)
+                if (err){
                     return done(err);
+                }
+
                 if (rows.length) {
                     return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
-                } else {
+                } 
+                else {
                     var newUserMysql = {
                         username: username,
                         password: bcrypt.hashSync(password, null, null)
@@ -40,9 +39,8 @@ module.exports = function(passport) {
 
                     var insertQuery = "INSERT INTO token.users ( username, password ) values (?,?)";
 
-                         connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
+                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password], function(err, rows) {
                         newUserMysql.id = rows.insertId;
-
                         return done(null, newUserMysql);
                     });
                 }

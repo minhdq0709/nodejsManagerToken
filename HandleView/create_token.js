@@ -125,7 +125,8 @@ function getObjectOnModal(){
         Token: $('#txtToken').val(),
         Note: $('#txtPassword').val(),
         Manager: getCookie("cookiename"),
-        StatusToken: 1
+        StatusToken: 1,
+        Cookies: $('#txtCookie').val()
     };
 }
 
@@ -133,7 +134,8 @@ function ClearTextBoxSpecial(){
     $('#txtNamePage').val('');
     $('#txtToken').val('');
     $('#txtLinkPage').val('');
-    $('#txtLinkPage').val('')
+    $('#txtLinkPage').val('');
+    $('#txtCookie').val('')
 }
 
 function ClearFullTextBox(){
@@ -141,7 +143,8 @@ function ClearFullTextBox(){
     $('#txtNamePage').val('');
     $('#txtToken').val('');
     $('#txtPassword').val('');
-    $('#txtLinkPage').val('')
+    $('#txtLinkPage').val('');
+    $('#txtCookie').val('')
 }
 
 function CloseModal(){

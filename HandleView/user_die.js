@@ -38,6 +38,7 @@ function LoadData() {
         return;
     }
 
+    let note = "Lấy lại cả token";
     $.ajax({
         url: "/getUserDieByManager/" + manager + "/" + UserDie,
         type: "GET",
@@ -46,15 +47,25 @@ function LoadData() {
         dataType: "json",
         success: function (result) {
             let html = '';
-            if(result.status == 200){
+            if(result.status === 200){
                 result.Mess.forEach(element => {
+                    let userName = element.User.toString().replace(/(\r\n|\n|\r)/gm, '');
+
                     html += '<tr>';
                     html +=     '<td>' + element.User + '</td>';
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', true)"></td>';
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', false)"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + userName + '\', true, ' + element.typeToken + ')"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + userName + '\', false, ' + element.typeToken + ')"></td>';
                     html +=     '<td class="text-center">';
-                    html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-pencil" onclick="Edit(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\')"></i>';
+                    html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-pencil" onclick="Edit(\'' + userName + '\')"></i>';
                     html +=     '</td>';
+                    
+                    if(element.typeToken != 0){
+                        html +=  '<td>' + note + '</td>';
+                    }
+                    else{
+                        html +=  '<td></td>';
+                    }
+
                     html += '</tr>';
                 });
             }
@@ -111,21 +122,30 @@ function ChangePassword(){
     });
 }
 
-function GetValueCheckBox(values, option){
+function GetValueCheckBox(values, option, typeToken){
+    let temp = {
+        userName: values,
+        typeToken: typeToken
+    };
+
     if(option){
-        if(_arrId.includes(values)){
-            _arrId = _arrId.filter(item => item != values);
+        if(_arrId.some(el => el.userName === temp.userName)){
+            _arrId = _arrId.filter(function(el) { 
+                return el.userName != temp.userName; 
+            });
         }
         else{
-            _arrId.push(values);
+            _arrId.push(temp);
         }
     }
     else{
-        if(_arrId2.includes(values)){
-            _arrId2 = _arrId2.filter(item => item != values);
+        if(_arrId2.some(el => el.userName === temp.userName)){
+            _arrId2 = _arrId2.filter(function(el) { 
+                return el.userName != temp.userName; 
+            });
         }
         else{
-            _arrId2.push(values);
+            _arrId2.push(temp);
         }
     }
 }

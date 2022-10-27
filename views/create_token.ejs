@@ -5,6 +5,7 @@
 <head>
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery.dataTables.min.js"></script>
@@ -30,7 +31,9 @@
 				<div class="row">
 					<div class="col-sm-9">
 						<small id="titleTab" style="padding-left: 7%; color: #000;">
-							<i class="glyphicon glyphicon-pencil"></i> Home / Thêm mới token
+							<i class="glyphicon glyphicon-hand-right"></i>
+							<a href="/home"> Home</a>
+							<i>/ Thêm mới token</i>
 						</small>
 					</div>
 					<div class="col-sm-3 addStyle">
@@ -79,6 +82,21 @@
 							<label for="exampleInputEmail1">Token:</label>
 							<input type="text" class="form-control" id="txtToken"
 								placeholder="Nhập token">
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputEmail1">Cookie:</label>
+							<input type="text" class="form-control" id="txtCookie"
+								placeholder="Nhập Cookie">
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputEmail1">Loại token:</label>
+							<select id="cbTypeToken" class="form-control">
+								<option value="0">Page truyền thống</option>
+								<option value="1">Lấy theo Instagram</option>
+								<option value="2">Lấy theo Cookie</option>
+							</select>
 						</div>
 					</div>
 	
