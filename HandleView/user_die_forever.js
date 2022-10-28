@@ -47,9 +47,11 @@ function LoadData() {
             let html = "";
             if(result.status == 200){
                 result.Mess.forEach(element => {
+                    let userName = element.User.toString().replace(/(\r\n|\n|\r)/gm, '');
+
                     html += "<tr>";
                     html +=     "<td>" + element.User + "</td>";
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\')"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + userName + '\',' + element.typeToken + ')"></td>';
                     html += '</tr>';
                 });
             }
@@ -66,12 +68,19 @@ function LoadData() {
     });
 }
 
-function GetValueCheckBox(values){
-    if(_arrId.includes(values)){
-        _arrId = _arrId.filter(item => item != values);
+function GetValueCheckBox(values, typeToken){
+    let temp = {
+        userName: values,
+        typeToken: typeToken
+    };
+
+    if(_arrId.some(el => el.userName === temp.userName)){
+        _arrId = _arrId.filter(function(el) { 
+            return el.userName != temp.userName; 
+        });
     }
     else{
-        _arrId.push(values);
+        _arrId.push(temp);
     }
 }
 

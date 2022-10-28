@@ -52,6 +52,9 @@ function LoadData(){
                     html +=     '</td>';
                     html +=     '<td>' + element.UserName + '</td>';
                     html +=     '<td>' + element.TotalAdmin + '</td>';
+                    html +=     '<td class="text-center">';
+                    html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-eye-open" onclick="ShowAdminByNamePage(\'' + element.FanPageName + '\')"></i>';
+                    html +=     '</td>';
                     html += '</tr>';
                 });
             }
@@ -68,3 +71,55 @@ function LoadData(){
         }
     });
 }
+
+function ShowAdminByNamePage(namePage){
+    if(namePage){
+        $.ajax({
+            url: "/getListAdminByPage/" + namePage,
+            type: "GET",
+            cache: false,
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if(result.status === 200){
+                    ShowDataOnModal(result.Mess);
+                    OpenModal();
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+    else{
+        $.notify("Không tìm thấy kết quả!!!", "warn");
+        return;
+    }
+}
+
+function ShowDataOnModal(listData){
+    let html = ``;
+    let countRow = listData.length;
+
+    if(countRow > 0){
+        for(let i = 0; i < countRow; ++i){
+            html += `<div class='form-group'>`;
+            html +=     `<label class='control-label col-sm-2'>Admin ${i + 1}:</label>`;
+            html +=     `<div class='col-sm-10'>`;
+            html +=         `<input class='form-control' value="${listData[i].User}">`;
+            html +=     `</div>`;
+            html += `</div>`;
+        }
+    }
+
+    $('#dynamicForm').html(html);
+}
+
+function Close(){
+    $('#myModal').modal('hide');
+}
+
+function OpenModal(){
+    $('#myModal').modal('show');
+}
+

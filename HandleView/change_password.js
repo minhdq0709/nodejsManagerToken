@@ -48,12 +48,14 @@ function LoadData() {
             let html = "";
             if(result.status == 200){
                 result.Mess.forEach(element => {
+                    let userName = element.User.toString().replace(/(\r\n|\n|\r)/gm, '');
+
                     html += '<tr>';
                     html +=     '<td>' + element.User + '</td>';
                     html +=     '<td class=\'text-center\'>';
-                    html +=         '<i style=\'cursor: pointer;\' class=\'glyphicon glyphicon-pencil\' onclick=Edit(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\')></i>';
+                    html +=         '<i style=\'cursor: pointer;\' class=\'glyphicon glyphicon-pencil\' onclick=Edit(\'' + userName + '\')></i>';
                     html +=     '</td>';
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + element.User.toString().replace(/(\r\n|\n|\r)/gm, '') + '\', true)"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + userName + '\', true)"></td>';
                     html += '</tr>';
                 });
             }
@@ -103,13 +105,13 @@ function ShowDataToTextBox(data, userName){
     if(countRow > 0){
         for(let i = 0; i < countRow; ++i){
             html += `<div class='form-group'>`
-            html +=     `<label class='control-label col-sm-4 left-style' id='lbNamePage'>${data[i].FanPageName}:</label>`
-            html +=     `<div class='col-sm-8'>`
-            html +=         `<input id='txtIdToken${i}' style='display: none;' value='${data[i].id}'>`
-            html +=         `<input class='form-control' id='txtToken${i}'>`
-            html +=     `</div>`
-            html += `</div>`
-        }
+            html +=     `<label class='control-label col-sm-4 left-style' id='lbNamePage'>${data[i].FanPageName}:</label>`;
+            html +=     `<div class='col-sm-8'>`;
+            html +=         `<input id='txtIdToken${i}' style='display: none;' value='${data[i].id}'>`;
+            html +=         `<input class='form-control' id='txtToken${i}'>`;
+            html +=     `</div>`;
+            html += `</div>`;
+        }l
     }
 
     $('#dynamicForm').html(html);
@@ -149,7 +151,7 @@ function GetDataOnModal(){
         arrData.push({
             Token: $('#txtToken' + i).val(),
             Id: +$('#txtIdToken' + i).val()
-        })
+        });
     }
 
     return arrData;
@@ -177,11 +179,18 @@ function OpenModal(){
 }
 
 function GetValueCheckBox(values){
-    if(_arrId.includes(values)){
-        _arrId = _arrId.filter(item => item != values);
+    let temp = {
+        userName: values,
+        typeToken: typeToken
+    };
+
+    if(_arrId.some(el => el.userName === temp.userName)){
+        _arrId = _arrId.filter(function(el) { 
+            return el.userName != temp.userName; 
+        });
     }
     else{
-        _arrId.push(values);
+        _arrId.push(temp);
     }
 }
 

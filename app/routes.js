@@ -100,6 +100,24 @@ module.exports = function (app, passport) {
 		});
 	});
 
+	app.get('/getListAdminByPage/:namePage', function (req, res) {
+		let namePage = req.params.namePage;
+
+		ManagerToken.GetListAdminByNamePage(namePage, (err, data) => {
+			let jsonData = {};
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = data;
+			}
+
+			res.json(jsonData);
+		});
+	});
+
 	app.get('/getUserChangePasswordByManager/:manager', function (req, res) {
 		let manager = req.params.manager;
 
@@ -170,7 +188,6 @@ module.exports = function (app, passport) {
 		let listUserName = req.body.mess;
 		let statusToken = +req.params.statusToken;
 
-		console.log("listUserName: ", listUserName);
 		ManagerToken.UpdateStatusToken(listUserName, statusToken, (err, data) => {
 			let jsonData = {};
 
