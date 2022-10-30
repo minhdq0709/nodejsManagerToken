@@ -212,6 +212,7 @@ class ManagerToken{
                             max(A.manager) as UserName, count(A.User) as TotalAdmin
                         FROM FacebookDb.fb_tokens as A 
                     where StatusToken in(${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD}) 
+                    and TypeToken != 2 
                     group by FanPageName 
                         having TotalAdmin < 4
                     order by TotalAdmin;`
