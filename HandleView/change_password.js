@@ -108,10 +108,19 @@ function ShowDataToTextBox(data, userName){
             html +=     `<label class='control-label col-sm-4 left-style' id='lbNamePage'>${data[i].FanPageName}:</label>`;
             html +=     `<div class='col-sm-8'>`;
             html +=         `<input id='txtIdToken${i}' style='display: none;' value='${data[i].id}'>`;
-            html +=         `<input class='form-control' id='txtToken${i}'>`;
+            
+            if(data[i].TypeToken === 2){
+                html +=     `<div style="display: flex; justify-content: space-between;">`;
+                html +=         `<input class="form-control mr-3" id="txtToken${i}" style="width: 49%;" placeholder="Nhập token">`;
+                html +=          `<input class="form-control" id="txtCookie${i}" style="width: 49%;" placeholder="Nhập cookie">`;
+                html +=     `</div>`;
+            }
+            else{
+                html +=     `<input class="form-control mr-3" id="txtToken${i}" style="width: 100%;">`;
+            }
             html +=     `</div>`;
             html += `</div>`;
-        }l
+        }
     }
 
     $('#dynamicForm').html(html);
@@ -150,7 +159,8 @@ function GetDataOnModal(){
     for(let i = 0; i < rowCount; ++i){
         arrData.push({
             Token: $('#txtToken' + i).val(),
-            Id: +$('#txtIdToken' + i).val()
+            Id: +$('#txtIdToken' + i).val(),
+            Cookie: $('#txtCookie' + i).val() || ""
         });
     }
 
@@ -158,16 +168,7 @@ function GetDataOnModal(){
 }
 
 function Close(){
-    ClearFullTextBox();
     CloseModal();
-}
-
-function ClearFullTextBox(){
-    $('#txtUserName').val('');
-    $('#txtNamePage').val('');
-    $('#txtToken').val('');
-    $('#txtPassword').val('');
-    $("#txtId").val('');
 }
 
 function CloseModal(){
@@ -180,8 +181,7 @@ function OpenModal(){
 
 function GetValueCheckBox(values){
     let temp = {
-        userName: values,
-        typeToken: typeToken
+        userName: values
     };
 
     if(_arrId.some(el => el.userName === temp.userName)){
@@ -217,7 +217,6 @@ function Save1(){
 
             $.notify("Thành công !!!", "success");
             LoadData();
-            
         },
         error: function (errormessage) {
         }

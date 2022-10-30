@@ -1,7 +1,7 @@
 "use  strict";
 const mysql = require('mysql');
 const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection3);
+const connection = mysql.createConnection(dbconfig.connection);
 const moment = require('moment');
 const USER_LIVE = 1;
 const USER_DIE = 100;
@@ -19,15 +19,17 @@ class Token{
         this.Manager = token.Manager,
         this.User = token.User,
         this.FanPageName = token.FanPageName,
-        this.Cookies = token.Cookies
+        this.Cookies = token.Cookies,
+        this.TypeToken = token.TypeToken,
+        this.IsPageOwner = token.IsPageOwner
     }
 }
 
 class ManagerToken{
     static Create(token, callback){
-        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName, FanPageLink, Datetime_tokendie, Cookies) values ?";
+        let query = "Insert into FacebookDb.fb_tokens(Token, Note, StatusToken, Manager, User, FanPageName, FanPageLink, Datetime_tokendie, Cookies, TypeToken, IsPageOwner) values ?";
         let values = [
-            [token.Token, token.Note, 1, token.Manager, token.User, token.FanPageName, token.FanPageLink, new Date(), token.Cookies]
+            [token.Token, token.Note, USER_LIVE, token.Manager, token.User, token.FanPageName, token.FanPageLink, new Date(), token.Cookies, token.TypeToken, token.IsPageOwner]
         ];
 
         connection.query(query, [values], function(err, result){
@@ -40,7 +42,7 @@ class ManagerToken{
     }
 
     static GetListUserDie(manager, statusToken, callback){
-        let query = `Select User, max(Token_type) as typeToken from FacebookDb.fb_tokens where 1 = 1`;
+        let query = `Select User, GROUP_CONCAT(TypeToken SEPARATOR ',') as typeToken from FacebookDb.fb_tokens where 1 = 1`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
@@ -62,7 +64,7 @@ class ManagerToken{
     }
 
     static GetListAdminByNamePage(namePage, callback){
-        let query = `SELECT distinct(User) FROM FacebookDb.fb_tokens where FanPageName = '${namePage}' and StatusToken in(1, 100, 101);`;
+        let query = `SELECT distinct(User) FROM FacebookDb.fb_tokens where FanPageName = '${namePage}' and StatusToken in(${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD});`;
         connection.query(query, function(err, result){
             if(err){
                 callback(err, null);
@@ -87,7 +89,7 @@ class ManagerToken{
     }
 
     static GetTokenByUser(userName, callback){
-        let query = `Select id, FanPageName from FacebookDb.fb_tokens where User = ? and StatusToken = 101;`;
+        let query = `Select id, FanPageName, TypeToken from FacebookDb.fb_tokens where User = ? and StatusToken = ${CHANGE_PASSWORD} order by TypeToken desc;`;
 
         connection.query(query, [userName],  function(err, result){
             if(err){
@@ -100,7 +102,7 @@ class ManagerToken{
     }
 
     static GetListPageBeenChangedPassword(manager, callback){
-        let query = `Select Userl from FacebookDb.fb_tokens where StatusToken = 101`;
+        let query = `Select User from FacebookDb.fb_tokens where StatusToken = ${CHANGE_PASSWORD}`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
@@ -118,19 +120,19 @@ class ManagerToken{
 
     static UpdateStatusToken(listToken, statusToken, callback){
         let query = ``;
+        const updateQueryConst = `UPDATE FacebookDb.fb_tokens SET StatusToken = `;
+
         listToken.forEach(item=> {
             switch(statusToken){
                 case USER_LIVE:{
-                    query += `UPDATE FacebookDb.fb_tokens SET StatusToken = `;
 
-                    if(item.typeToken){
-                        query += `${USER_LIVE}`;
-                    }
-                    else{ // token new type is trying
-                        query += `${CHANGE_PASSWORD}`;
+                    if(item.typeToken.includes('1') || item.typeToken.includes('2')){
+                        query += `${updateQueryConst} ${CHANGE_PASSWORD}, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE TypeToken != 0 and User = '${item.userName}' and statustoken != ${PAGE_INVALIDATE};`;
                     }
 
-                    query += `, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE User = '${item.userName}' and statustoken != ${PAGE_INVALIDATE};`
+                    if(item.typeToken.includes('0')){
+                        query += `${updateQueryConst} ${USER_LIVE}, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE User = '${item.userName}' and statustoken != ${PAGE_INVALIDATE} and TypeToken not in (1, 2);`
+                    }
 
                     break;
                 }
@@ -166,7 +168,10 @@ class ManagerToken{
     }
 
     static UpdateTokenById(token, id, callback){
-        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', StatusToken = 1, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE Id = ${id};`;
+        let query = `UPDATE FacebookDb.fb_tokens SET Token = '${token}', 
+            StatusToken = ${USER_LIVE}, 
+            Datetime_tokendie = '${moment(new Date()).format(formatTime)}' 
+            WHERE Id = ${id};`;
         
         connection.query(query, function(err, result){
             if(err){
@@ -179,15 +184,20 @@ class ManagerToken{
 
     static UpdateListToken(listToken, callback){
         let query = ``;
+
         listToken.forEach(elment=> {
             if(elment.Token.length){
-                query += `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}', StatusToken = 1, Datetime_tokendie = '${moment(new Date()).format(formatTime)}' WHERE Id = ${elment.Id};`;
+                query +=    `UPDATE FacebookDb.fb_tokens SET Token = '${elment.Token}',`;
+                query +=        `StatusToken = ${USER_LIVE},`;
+                query +=        `Datetime_tokendie = '${moment(new Date()).format(formatTime)}',`;
+                query +=        `Cookies = '${elment.Cookie}' `;
+                query +=    `WHERE Id = ${elment.Id};`;
             }
             else{
-                query += `UPDATE FacebookDb.fb_tokens SET StatusToken = 105 WHERE Id = ${elment.Id};`;
+                query += `UPDATE FacebookDb.fb_tokens SET StatusToken = ${PAGE_INVALIDATE} WHERE Id = ${elment.Id};`;
             }
         })
-        
+
         connection.query(query, function(err, result){
             if(err){
                 return callback(err, null);
@@ -201,7 +211,7 @@ class ManagerToken{
         let query = `SELECT A.FanPageName, max(A.FanPageLink) as Link, 
                             max(A.manager) as UserName, count(A.User) as TotalAdmin
                         FROM FacebookDb.fb_tokens as A 
-                    where StatusToken in(1, 101, 100) 
+                    where StatusToken in(${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD}) 
                     group by FanPageName 
                         having TotalAdmin < 4
                     order by TotalAdmin;`

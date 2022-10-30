@@ -64,7 +64,7 @@ function LoadData() {
 }
 
 function Save(){
-    let data = getObjectOnModal();;
+    let data = getObjectOnModal();
 
     if(!data.Manager.length){
         $.notify("Phiên đăng nhập hết hạn, bạn hãy đăng nhập lại !!!", "warn");
@@ -73,16 +73,6 @@ function Save(){
 
     if(!data.User.length){
         $.notify("Nhập tên user !!!", "warn");
-        return;
-    }
-
-    if(!data.FanPageName.length){
-        $.notify("Nhập tên fanpage !!!", "warn");
-        return;
-    }
-
-    if(!data.FanPageLink.length){
-        $.notify("Nhập link fanpage !!!", "warn");
         return;
     }
 
@@ -126,7 +116,9 @@ function getObjectOnModal(){
         Note: $('#txtPassword').val(),
         Manager: getCookie("cookiename"),
         StatusToken: 1,
-        Cookies: $('#txtCookie').val()
+        Cookies: $('#txtCookie').val(),
+        TypeToken: $("#cbTypeToken").val(),
+        IsPageOwner: $('#cbIsPageOwner').is(":checked") == true ? 1 : 0
     };
 }
 
@@ -135,7 +127,9 @@ function ClearTextBoxSpecial(){
     $('#txtToken').val('');
     $('#txtLinkPage').val('');
     $('#txtLinkPage').val('');
-    $('#txtCookie').val('')
+    $('#txtCookie').val('');
+    $("#cbTypeToken").val('0');
+    $('#cbIsPageOwner').prop('checked', false);
 }
 
 function ClearFullTextBox(){
@@ -144,7 +138,9 @@ function ClearFullTextBox(){
     $('#txtToken').val('');
     $('#txtPassword').val('');
     $('#txtLinkPage').val('');
-    $('#txtCookie').val('')
+    $('#txtCookie').val('');
+    $("#cbTypeToken").val('0');
+    $('#cbIsPageOwner').prop('checked', false);
 }
 
 function CloseModal(){
