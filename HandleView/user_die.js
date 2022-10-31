@@ -38,7 +38,6 @@ function LoadData() {
         return;
     }
 
-    let note = "Lấy lại cả token";
     $.ajax({
         url: "/getUserDieByManager/" + manager + "/" + UserDie,
         type: "GET",
@@ -47,6 +46,8 @@ function LoadData() {
         dataType: "json",
         success: function (result) {
             let html = '';
+            let note = "Lấy lại cả token";
+
             if(result.status === 200){
                 result.Mess.forEach(element => {
                     let userName = element.User.toString().replace(/(\r\n|\n|\r)/gm, '');
@@ -59,7 +60,7 @@ function LoadData() {
                     html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-pencil" onclick="Edit(\'' + userName + '\')"></i>';
                     html +=     '</td>';
                     
-                    if(element.typeToken != 0){
+                    if(element.typeToken.includes('1') || element.typeToken.includes('2')){
                         html +=  '<td>' + note + '</td>';
                     }
                     else{

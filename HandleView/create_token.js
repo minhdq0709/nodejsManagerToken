@@ -118,7 +118,8 @@ function getObjectOnModal(){
         StatusToken: 1,
         Cookies: $('#txtCookie').val(),
         TypeToken: $("#cbTypeToken").val(),
-        IsPageOwner: $('#cbIsPageOwner').is(":checked") == true ? 1 : 0
+        IsPageOwner: $('#cbIsPageOwner').is(":checked") == true ? 1 : 0,
+        ServerName: $("#txtServerName").val()
     };
 }
 
@@ -130,6 +131,7 @@ function ClearTextBoxSpecial(){
     $('#txtCookie').val('');
     $("#cbTypeToken").val('0');
     $('#cbIsPageOwner').prop('checked', false);
+    $("#txtServerName").val('');
 }
 
 function ClearFullTextBox(){
@@ -141,6 +143,7 @@ function ClearFullTextBox(){
     $('#txtCookie').val('');
     $("#cbTypeToken").val('0');
     $('#cbIsPageOwner').prop('checked', false);
+    $("#txtServerName").val('');
 }
 
 function CloseModal(){

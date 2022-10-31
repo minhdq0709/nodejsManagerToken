@@ -10,7 +10,7 @@ module.exports = function(passport) {
     });
 
     passport.deserializeUser(function(id, done) {
-        connection.query("SELECT * FROM facebookdb.users WHERE id = ? ",[id], function(err, rows){
+        connection.query("SELECT * FROM token.users WHERE id = ? ",[id], function(err, rows){
             done(err, rows[0]);
         });
     });
@@ -23,7 +23,7 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, username, password, done) {
-            connection.query("SELECT * FROM facebookdb.users WHERE username = ?",[username], function(err, rows) {
+            connection.query("SELECT * FROM token.users WHERE username = ?",[username], function(err, rows) {
                 if (err){
                     return done(err);
                 }
@@ -37,7 +37,7 @@ module.exports = function(passport) {
                         password: bcrypt.hashSync(password, null, null)
                     };
 
-                    var insertQuery = "INSERT INTO facebookdb.users ( username, password ) values (?,?)";
+                    var insertQuery = "INSERT INTO token.users ( username, password ) values (?,?)";
 
                     connection.query(insertQuery,[newUserMysql.username, newUserMysql.password], function(err, rows) {
                         newUserMysql.id = rows.insertId;
@@ -56,7 +56,7 @@ module.exports = function(passport) {
             passReqToCallback : true
         },
         function(req, username, password, done) {
-            connection.query("SELECT * FROM facebookdb.users WHERE username = ?", [username], function(err, rows){
+            connection.query("SELECT * FROM token.users WHERE username = ?", [username], function(err, rows){
                 if (err){
                     return done(err);
                 }
