@@ -40,7 +40,6 @@ class ManagerToken{
 
         connection.query(query, [values], function(err, result){
             if(err){
-                console.log("err: ", err);
                 return callback(err, null);
             }
 
@@ -49,7 +48,7 @@ class ManagerToken{
     }
 
     static GetListUserDie(manager, statusToken, callback){
-        let query = `Select User, GROUP_CONCAT(Token_type SEPARATOR ',') as typeToken from FacebookDb.fb_tokens where 1 = 1`;
+        let query = `Select User, GROUP_CONCAT(Token_type SEPARATOR ',') as typeToken, Max(ServerName) as ServerName from FacebookDb.fb_tokens where 1 = 1`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }

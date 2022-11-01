@@ -67,6 +67,7 @@ function LoadData() {
                         html +=  '<td></td>';
                     }
 
+                    html += '<td>' + element.ServerName || "" + '</td>';
                     html += '</tr>';
                 });
             }
