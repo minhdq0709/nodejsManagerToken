@@ -8,7 +8,6 @@ module.exports = {
         'password': '123456aA@',
         'multipleStatements': true
     },
-    'database': 'token',
     // server
     'connection2': {
         'host': '192.168.23.22',

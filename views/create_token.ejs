@@ -13,12 +13,13 @@
 	<script src="js/notify.min.js"></script>
 	<script src="create_token.js"></script>
 	<script src="js/ShareForView/constant.js"></script>
-	
+
 	<style>
 		body {
 			word-wrap: break-word;
 		}
-		.addStyle{
+
+		.addStyle {
 			padding-left: 8%;
 		}
 	</style>
@@ -52,54 +53,64 @@
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 						<h4 class="modal-title">Thêm mới token</h4>
 					</div>
-	
+
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="exampleInputEmail1">Tên user:</label>
-							<input type="text" class="form-control" id="txtUserName"
-								placeholder="NguyenVanA@gmail.com">
+							<input type="text" class="form-control" id="txtUserName" placeholder="NguyenVanA@gmail.com">
 						</div>
-	
-						<div class="form-group">
-							<label for="exampleInputEmail1">Mật khẩu:</label>
-							<input type="text" class="form-control" id="txtPassword"
-								placeholder="Nhập password">
+
+						<div class="form-group" style="display: flex;justify-content: space-between;">
+							<div style="width: 47%;">
+								<label for="exampleInputEmail1">Mật khẩu:</label>
+								<input type="text" class="form-control" id="txtPassword" placeholder="Nhập password">
+							</div>
+
+							<div style="width: 47%;">
+								<label for="exampleInputEmail1">Tên Server:</label>
+								<input type="text" class="form-control" id="txtServerName" placeholder="Nhập tên server">
+							</div>
 						</div>
 
 						<div class="form-group">
 							<label for="exampleInputEmail1">Tên Fanpage:</label>
-							<input type="text" class="form-control" id="txtNamePage"
-								placeholder="Nhập tên page">
+							<input type="text" class="form-control" id="txtNamePage" placeholder="Nhập tên page">
 						</div>
 
 						<div class="form-group">
 							<label for="exampleInputEmail1">Link Fanpage:</label>
-							<input type="text" class="form-control" id="txtLinkPage"
-								placeholder="Nhập link page">
+							<input type="text" class="form-control" id="txtLinkPage" placeholder="Nhập link page">
 						</div>
 
 						<div class="form-group">
 							<label for="exampleInputEmail1">Token:</label>
-							<input type="text" class="form-control" id="txtToken"
-								placeholder="Nhập token">
+							<input type="text" class="form-control" id="txtToken" placeholder="Nhập token">
 						</div>
 
 						<div class="form-group">
 							<label for="exampleInputEmail1">Cookie:</label>
-							<input type="text" class="form-control" id="txtCookie"
-								placeholder="Nhập Cookie">
+							<input type="text" class="form-control" id="txtCookie" placeholder="Nhập Cookie">
 						</div>
 
-						<div class="form-group">
-							<label for="exampleInputEmail1">Loại token:</label>
-							<select id="cbTypeToken" class="form-control">
-								<option value="0">Page truyền thống</option>
-								<option value="1">Lấy theo Instagram</option>
-								<option value="2">Lấy theo Cookie</option>
-							</select>
+						<div class="form-group" style="display: flex;justify-content: space-between;">
+							<div style="width: 47%;">
+								<label for="exampleInputEmail1">Loại token:</label>
+								<select id="cbTypeToken" class="form-control">
+									<option value="0">Page truyền thống</option>
+									<option value="1">Lấy theo Instagram</option>
+									<option value="2">Lấy theo Cookie</option>
+								</select>
+							</div>
+
+							<div style="width: 47%;">
+								<label for="exampleInputEmail1">Admin tạo page:</label>
+								<div class="checkbox">
+									<label><input type="checkbox" id="cbIsPageOwner"></label>
+								</div>
+							</div>
 						</div>
 					</div>
-	
+
 					<div class="modal-footer">
 						<button class="btn btn-primary" id="Save" onclick="Save()">Lưu</button>
 						<button class="btn btn-danger" id="Close" onclick="Close()">Đóng</button>

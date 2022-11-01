@@ -64,7 +64,7 @@ function LoadData() {
 }
 
 function Save(){
-    let data = getObjectOnModal();;
+    let data = getObjectOnModal();
 
     if(!data.Manager.length){
         $.notify("Phiên đăng nhập hết hạn, bạn hãy đăng nhập lại !!!", "warn");
@@ -116,7 +116,10 @@ function getObjectOnModal(){
         Note: $('#txtPassword').val(),
         Manager: getCookie("cookiename"),
         StatusToken: 1,
-        Cookies: $('#txtCookie').val()
+        Cookies: $('#txtCookie').val(),
+        TypeToken: $("#cbTypeToken").val(),
+        IsPageOwner: $('#cbIsPageOwner').is(":checked") == true ? 1 : 0,
+        ServerName: $("#txtServerName").val()
     };
 }
 
@@ -125,7 +128,10 @@ function ClearTextBoxSpecial(){
     $('#txtToken').val('');
     $('#txtLinkPage').val('');
     $('#txtLinkPage').val('');
-    $('#txtCookie').val('')
+    $('#txtCookie').val('');
+    $("#cbTypeToken").val('0');
+    $('#cbIsPageOwner').prop('checked', false);
+    $("#txtServerName").val('');
 }
 
 function ClearFullTextBox(){
@@ -134,7 +140,10 @@ function ClearFullTextBox(){
     $('#txtToken').val('');
     $('#txtPassword').val('');
     $('#txtLinkPage').val('');
-    $('#txtCookie').val('')
+    $('#txtCookie').val('');
+    $("#cbTypeToken").val('0');
+    $('#cbIsPageOwner').prop('checked', false);
+    $("#txtServerName").val('');
 }
 
 function CloseModal(){

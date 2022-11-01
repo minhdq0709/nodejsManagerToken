@@ -51,7 +51,7 @@ function LoadData() {
 
                     html += "<tr>";
                     html +=     "<td>" + element.User + "</td>";
-                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + userName + '\',' + element.typeToken + ')"></td>';
+                    html +=     '<td class="text-center"><input type="checkbox" onclick="GetValueCheckBox(\'' + userName + '\',\'' + element.typeToken + '\')"></td>';
                     html += '</tr>';
                 });
             }
