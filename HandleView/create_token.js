@@ -76,16 +76,6 @@ function Save(){
         return;
     }
 
-    if(!data.FanPageName.length){
-        $.notify("Nhập tên fanpage !!!", "warn");
-        return;
-    }
-
-    if(!data.FanPageLink.length){
-        $.notify("Nhập link fanpage !!!", "warn");
-        return;
-    }
-
     if(!data.Token.length){
         $.notify("Nhập token !!!", "warn");
         return;

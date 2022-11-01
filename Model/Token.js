@@ -32,6 +32,7 @@ class ManagerToken{
 
         connection.query(query, [values], function(err, result){
             if(err){
+                console.log("err: ", err);
                 return callback(err, null);
             }
 
