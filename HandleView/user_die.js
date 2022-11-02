@@ -49,6 +49,10 @@ function LoadData() {
             let note = "Lấy lại cả token";
 
             if(result.status === 200){
+                let GET_TOKEN_BY_INSTAGRAM = 1;
+                let GET_BY_COOKIE = 2;
+                console.log("result: ", result);
+
                 result.Mess.forEach(element => {
                     let userName = element.User.toString().replace(/(\r\n|\n|\r)/gm, '');
 
@@ -60,14 +64,14 @@ function LoadData() {
                     html +=         '<i style="cursor: pointer;" class="glyphicon glyphicon-pencil" onclick="Edit(\'' + userName + '\')"></i>';
                     html +=     '</td>';
                     
-                    if(element.typeToken.includes('1') || element.typeToken.includes('2')){
+                    if(element.typeToken.includes(`${GET_TOKEN_BY_INSTAGRAM.toString()}`) || element.typeToken.includes(`${GET_BY_COOKIE.toString()}`)){
                         html +=  '<td>' + note + '</td>';
                     }
                     else{
                         html +=  '<td></td>';
                     }
 
-                    html += '<td>' + element.ServerName || "" + '</td>';
+                    html += '<td>' + element.ServerName + '</td>';
                     html += '</tr>';
                 });
             }

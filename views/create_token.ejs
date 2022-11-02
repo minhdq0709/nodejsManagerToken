@@ -27,114 +27,114 @@
 
 <body>
 	<%- include('./header'); -%>
-		<section class="content-header">
-			<h4>
-				<div class="row">
-					<div class="col-sm-9">
-						<small id="titleTab" style="padding-left: 7%; color: #000;">
-							<i class="glyphicon glyphicon-hand-right"></i>
-							<a href="/home"> Home</a>
-							<i>/ Thêm mới token</i>
-						</small>
-					</div>
-					<div class="col-sm-3 addStyle">
-						<button id="Save" type="button" class="btn btn-primary" data-toggle="modal"
-							data-target="#myModal">Thêm mới token</button>
-					</div>
-				</div>
-			</h4>
-		</section>
-
-		<!-- Modal -->
-		<div id="myModal" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Thêm mới token</h4>
-					</div>
-
-					<div class="modal-body">
-						<div class="form-group">
-							<label for="exampleInputEmail1">Tên user:</label>
-							<label style="color: red;"> (*)</label>
-							<input type="text" class="form-control" id="txtUserName" placeholder="NguyenVanA@gmail.com">
-						</div>
-
-						<div class="form-group" style="display: flex;justify-content: space-between;">
-							<div style="width: 47%;">
-								<label for="exampleInputEmail1">Mật khẩu:</label>
-								<label style="color: red;"> (*)</label>
-								<input type="text" class="form-control" id="txtPassword" placeholder="Nhập password">
-							</div>
-
-							<div style="width: 47%;">
-								<label for="exampleInputEmail1">Máy login:</label>
-								<input type="text" class="form-control" id="txtServerName" placeholder="Nhập tên server">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputEmail1">Tên Fanpage:</label>
-							<input type="text" class="form-control" id="txtNamePage" placeholder="Nhập tên page">
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputEmail1">Link Fanpage:</label>
-							<input type="text" class="form-control" id="txtLinkPage" placeholder="Nhập link page">
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputEmail1">Token:</label>
-							<label style="color: red;"> (*)</label>
-							<input type="text" class="form-control" id="txtToken" placeholder="Nhập token">
-						</div>
-
-						<div class="form-group">
-							<label for="exampleInputEmail1">Cookie:</label>
-							<input type="text" class="form-control" id="txtCookie" placeholder="Nhập Cookie">
-						</div>
-
-						<div class="form-group" style="display: flex;justify-content: space-between;">
-							<div style="width: 47%;">
-								<label for="exampleInputEmail1">Loại token:</label>
-								<select id="cbTypeToken" class="form-control">
-									<option value="0">Page truyền thống</option>
-									<option value="1">Lấy theo Instagram</option>
-									<option value="2">Lấy theo Cookie</option>
-								</select>
-							</div>
-
-							<div style="width: 47%;">
-								<label for="exampleInputEmail1">Admin tạo page:</label>
-								<div class="checkbox">
-									<label><input type="checkbox" id="cbIsPageOwner"></label>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="modal-footer">
-						<button class="btn btn-primary" id="Save" onclick="Save()">Lưu</button>
-						<button class="btn btn-danger" id="Close" onclick="Close()">Đóng</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="container">
+	<section class="content-header">
+		<h4>
 			<div class="row">
-				<table id="example" class="table table-striped table-bordered" style="width:100%">
-					<thead>
-						<tr>
-							<th style="width: 100%;">Tên User</th>
-						</tr>
-					</thead>
-					<tbody id="bodyTable">
-					</tbody>
-				</table>
+				<div class="col-sm-9">
+					<small id="titleTab" style="padding-left: 7%; color: #000;">
+						<i class="glyphicon glyphicon-hand-right"></i>
+						<a href="/home"> Home</a>
+						<i>/ Thêm mới token</i>
+					</small>
+				</div>
+				<div class="col-sm-3 addStyle">
+					<button id="Save" type="button" class="btn btn-primary" data-toggle="modal"
+						data-target="#myModal">Thêm mới token</button>
+				</div>
+			</div>
+		</h4>
+	</section>
+
+	<!-- Modal -->
+	<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Thêm mới token</h4>
+				</div>
+
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="exampleInputEmail1">Tên user:</label>
+						<label style="color: red;"> (*)</label>
+						<input type="text" class="form-control" id="txtUserName" placeholder="NguyenVanA@gmail.com">
+					</div>
+
+					<div class="form-group" style="display: flex;justify-content: space-between;">
+						<div style="width: 47%;">
+							<label for="exampleInputEmail1">Mật khẩu:</label>
+							<label style="color: red;"> (*)</label>
+							<input type="text" class="form-control" id="txtPassword" placeholder="Nhập password">
+						</div>
+
+						<div style="width: 47%;">
+							<label for="exampleInputEmail1">Máy login:</label>
+							<input type="text" class="form-control" id="txtServerName" placeholder="Nhập tên server">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">Tên Fanpage:</label>
+						<input type="text" class="form-control" id="txtNamePage" placeholder="Nhập tên page">
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">Link Fanpage:</label>
+						<input type="text" class="form-control" id="txtLinkPage" placeholder="Nhập link page">
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">Token:</label>
+						<label style="color: red;"> (*)</label>
+						<input type="text" class="form-control" id="txtToken" placeholder="Nhập token">
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail1">Cookie:</label>
+						<input type="text" class="form-control" id="txtCookie" placeholder="Nhập Cookie">
+					</div>
+
+					<div class="form-group" style="display: flex;justify-content: space-between;">
+						<div style="width: 47%;">
+							<label for="exampleInputEmail1">Loại token:</label>
+							<select id="cbTypeToken" class="form-control">
+								<option value="0">Page truyền thống</option>
+								<option value="1">Lấy theo Instagram</option>
+								<option value="2">Lấy theo Cookie</option>
+							</select>
+						</div>
+
+						<div style="width: 47%;">
+							<label for="exampleInputEmail1">Admin tạo page:</label>
+							<div class="checkbox">
+								<label><input type="checkbox" id="cbIsPageOwner"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button class="btn btn-primary" id="Save" onclick="Save()">Lưu</button>
+					<button class="btn btn-danger" id="Close" onclick="Close()">Đóng</button>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<table id="example" class="table table-striped table-bordered" style="width:100%">
+				<thead>
+					<tr>
+						<th style="width: 100%;">Tên User</th>
+					</tr>
+				</thead>
+				<tbody id="bodyTable">
+				</tbody>
+			</table>
+		</div>
+	</div>
 </body>
 
 </html>
