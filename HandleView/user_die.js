@@ -51,7 +51,6 @@ function LoadData() {
             if(result.status === 200){
                 let GET_TOKEN_BY_INSTAGRAM = 1;
                 let GET_BY_COOKIE = 2;
-                console.log("result: ", result);
 
                 result.Mess.forEach(element => {
                     let userName = element.User.toString().replace(/(\r\n|\n|\r)/gm, '');
