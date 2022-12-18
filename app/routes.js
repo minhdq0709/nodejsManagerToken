@@ -81,6 +81,23 @@ module.exports = function (app, passport) {
 		});
 	});
 
+	app.post('/create_token_yt_tiktok', isLoggedIn, function (req, res) {
+		ManagerToken.CreateTokenTableYt_Tiktok(ConvertToArray(req.body), (err, result)=> {
+			let jsonData = {};
+
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = result;
+			}
+
+			res.json(jsonData);
+		});
+	});
+
 	app.get('/getUserDieByManager/:manager/:statusToken', function (req, res) {
 		let manager = req.params.manager;
 		let statusToken = +req.params.statusToken;
@@ -268,4 +285,12 @@ function isLoggedIn(req, res, next) {
 	}
 
 	res.redirect('/');
+}
+
+function ConvertToArray(listData)
+{
+	return listData.map(item => [
+		item.token,
+		+item.typeToken
+	]);
 }

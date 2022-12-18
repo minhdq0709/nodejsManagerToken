@@ -52,6 +52,7 @@ function LoadData() {
 
                     html += '<tr>';
                     html +=     '<td>' + element.User + '</td>';
+                    html +=     '<td>' + element.ServerName + '</td>';
                     html +=     '<td class=\'text-center\'>';
                     html +=         '<i style=\'cursor: pointer;\' class=\'glyphicon glyphicon-pencil\' onclick=Edit(\'' + userName + '\')></i>';
                     html +=     '</td>';

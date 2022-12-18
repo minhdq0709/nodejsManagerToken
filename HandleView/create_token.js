@@ -1,3 +1,24 @@
+const col = [
+    {
+        type: 'dropdown',
+        title: 'Loại token',
+        width: 120,
+        source: [
+            {id: 1, name: "YT", text: "1: YT"},
+            {id: 2, name: "Tiktok", text: "2: tiktok"}
+        ],
+        name: "typeToken"
+    },
+    {
+        type: 'text',
+        width: 400,
+        name: 'token',
+        title: 'Token'
+    }
+];
+
+let mySpreadsheet2 = {};
+
 $(document).ready(function () {
     LoadData();
 });
@@ -7,7 +28,7 @@ function getCookie(cname) {
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
 
-    for(let i = 0; i < ca.length; i++) {
+    for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
 
         while (c.charAt(0) == ' ') {
@@ -29,11 +50,11 @@ function LoadData() {
 
     $('#bodyTable').empty();
     let manager = getCookie("cookiename");
-    if(!manager.length){
+    if (!manager.length) {
         $.notify("Hết phiên đăng nhập, bạn hãy đăng nhập lại !!!", "warn");
         return;
     }
-    
+
     $.ajax({
         url: "/getUserDieByManager/" + manager + "/" + UserLive,
         type: "GET",
@@ -42,10 +63,10 @@ function LoadData() {
         dataType: "json",
         success: function (result) {
             let html = "";
-            if(result.status == 200){
+            if (result.status == 200) {
                 result.Mess.forEach(element => {
                     html += "<tr>";
-                    html +=     "<td>" + element.User + "</td>";
+                    html += "<td>" + element.User + "</td>";
                     html += '</tr>';
                 });
             }
@@ -63,20 +84,20 @@ function LoadData() {
     });
 }
 
-function Save(){
+function Save() {
     let data = getObjectOnModal();
 
-    if(!data.Manager.length){
+    if (!data.Manager.length) {
         $.notify("Phiên đăng nhập hết hạn, bạn hãy đăng nhập lại !!!", "warn");
         return;
     }
 
-    if(!data.User.length){
+    if (!data.User.length) {
         $.notify("Nhập tên user !!!", "warn");
         return;
     }
 
-    if(!data.Token.length){
+    if (!data.Token.length) {
         $.notify("Nhập token !!!", "warn");
         return;
     }
@@ -90,16 +111,16 @@ function Save(){
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (result) {
-           if(result.status == 200){
+            if (result.status == 200) {
                 $.notify("Thành công !!!", "success");
                 ClearTextBoxSpecial();
 
                 return;
-           }
-           else{
+            }
+            else {
                 $.notify("Có lỗi xảy ra !!!", "error");
                 return;
-           }
+            }
         },
         error: function (errormessage) {
             alert(errormessage.responseText);
@@ -107,7 +128,41 @@ function Save(){
     });
 }
 
-function getObjectOnModal(){
+function SaveTokenYt_Tiktok()
+{
+    let data = filterDataToSave(mySpreadsheet2.getJson());
+    console.log("data: ", data);
+    
+    if(data.length == 0)
+    {
+        $.notify("Dữ liệu ko hợp lệ !!!", "error");
+        return;
+    }
+
+    /* Save data to db */
+    $.ajax({
+        url: "/create_token_yt_tiktok",
+        data: JSON.stringify(data),
+        type: "POST",
+        cache: false,
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            if (result.status == 200) {
+                $.notify("Thành công !!!", "success");
+                return;
+            }
+
+            $.notify("Có lỗi xảy ra !!!", "error");
+            return;
+        },
+        error: function (errormessage) {
+            console.log(errormessage.responseText);
+        }
+    });
+}
+
+function getObjectOnModal() {
     return {
         User: $('#txtUserName').val(),
         FanPageName: $('#txtNamePage').val(),
@@ -123,7 +178,7 @@ function getObjectOnModal(){
     };
 }
 
-function ClearTextBoxSpecial(){
+function ClearTextBoxSpecial() {
     $('#txtNamePage').val('');
     $('#txtToken').val('');
     $('#txtLinkPage').val('');
@@ -134,7 +189,7 @@ function ClearTextBoxSpecial(){
     $("#txtServerName").val('');
 }
 
-function ClearFullTextBox(){
+function ClearFullTextBox() {
     $('#txtUserName').val('');
     $('#txtNamePage').val('');
     $('#txtToken').val('');
@@ -146,12 +201,29 @@ function ClearFullTextBox(){
     $("#txtServerName").val('');
 }
 
-function CloseModal(){
+function CloseModal() {
     $('#myModal').modal('hide');
 }
 
 
-function Close(){
+function Close() {
     CloseModal();
     ClearFullTextBox();
+}
+
+function ShowModalExccel() {
+    jexcel.destroy(document.getElementById('spreadsheet3'), false);
+
+    mySpreadsheet2 = jexcel(document.getElementById('spreadsheet3'), {
+        minDimensions: [0, 1],
+        tableWidth: '100%',
+        tableOverflow: true,
+        columns: col
+    });
+}
+
+function filterDataToSave(myExcel) {
+    return myExcel.filter(function(item) {
+        return (item.token && item.typeToken);
+    });
 }

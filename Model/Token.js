@@ -47,6 +47,19 @@ class ManagerToken{
         })
     }
 
+    static CreateTokenTableYt_Tiktok(listToken, callback){
+        let query = "Insert into FacebookDb.Token_YT_Tiktok(Token, Status_) values ?";
+
+        connection.query(query, [listToken], function(err, result){
+            if(err){
+                console.log(err);
+                return callback(err, null);
+            }
+
+            return callback(null, result);
+        })
+    }
+
     static GetListUserDie(manager, statusToken, callback){
         let query = `Select User, GROUP_CONCAT(Token_type SEPARATOR ',') as typeToken from FacebookDb.fb_tokens where 1 = 1`;
         if(manager){
@@ -108,7 +121,7 @@ class ManagerToken{
     }
 
     static GetListPageBeenChangedPassword(manager, callback){
-        let query = `Select User from FacebookDb.fb_tokens where StatusToken = ${CHANGE_PASSWORD}`;
+        let query = `Select User, max(ServerName) as ServerName from FacebookDb.fb_tokens where StatusToken = ${CHANGE_PASSWORD}`;
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
@@ -208,6 +221,7 @@ class ManagerToken{
 
         connection.query(query, function(err, result){
             if(err){
+                console.log("err: ", err);
                 return callback(err, null);
             }
 
