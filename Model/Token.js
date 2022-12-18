@@ -1,13 +1,17 @@
 "use  strict";
 const mysql = require('mysql');
-const dbconfig = require('../config/database.js');
-const connection = mysql.createConnection(dbconfig.connection2);
 const moment = require('moment');
+const dbconfig = require('../config/database.js');
+
+const connection = mysql.createConnection(dbconfig.connection2);
 const USER_LIVE = 1;
 const USER_DIE = 100;
 const CHANGE_PASSWORD = 101;
 const USER_DIE_FOREVER = 102;
 const PAGE_INVALIDATE = 105;
+const PAGE_CLASSIC = 0;
+const GET_TOKEN_BY_INSTAGRAM = 1;
+const GET_BY_COOKIE = 2;
 const formatTime = 'YYYY-MM-DD HH:mm:ss';
 
 class Token{
@@ -61,7 +65,10 @@ class ManagerToken{
     }
 
     static GetListUserDie(manager, statusToken, callback){
-        let query = `Select User, GROUP_CONCAT(Token_type SEPARATOR ',') as typeToken from FacebookDb.fb_tokens where 1 = 1`;
+        let query = `Select User, GROUP_CONCAT(Token_type SEPARATOR ',') as typeToken, 
+                        if(Max(ServerName) IS NULL, '', Max(ServerName)) as ServerName 
+                    from FacebookDb.fb_tokens where 1 = 1`;
+                    
         if(manager){
             query += ` and Manager = '${manager}'`;
         }
@@ -146,11 +153,11 @@ class ManagerToken{
             switch(statusToken){
                 case USER_LIVE:{
 
-                    if(item.typeToken.includes('1') || item.typeToken.includes('2')){
+                    if(item.typeToken.includes(`${GET_TOKEN_BY_INSTAGRAM.toString()}`) || item.typeToken.includes(`${GET_BY_COOKIE.toString()}`)){
                         query += `${updateQueryConst} ${CHANGE_PASSWORD} WHERE Token_type != 0 and User = '${item.userName}' and statustoken != ${PAGE_INVALIDATE};`;
                     }
 
-                    if(item.typeToken.includes('0')){
+                    if(item.typeToken.includes(`${PAGE_CLASSIC.toString()}`)){
                         query += `${updateQueryConst} ${USER_LIVE}, Datetime_Token_Opened = '${dateNow}' WHERE User = '${item.userName}' and statustoken != ${PAGE_INVALIDATE} and Token_type not in (1, 2);`
                     }
 
