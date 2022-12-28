@@ -114,6 +114,46 @@ class ManagerToken{
         });
     }
 
+    static GetTokenByManager(manager, callback){
+        let query = 
+            `select count(*) as tokenInMonth 
+                from FacebookDb.fb_tokens
+            where manager = '${manager}'
+                and MONTH(datetime_create_token) = MONTH(now())
+                and StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD})
+            union
+            select count(*) as totalToken
+                from FacebookDb.fb_tokens
+            where manager = '${manager}'
+                and StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD});`
+
+        connection.query(query,  function(err, result){
+            if(err){
+                callback(err, null);
+                return;
+            }
+
+            return callback(null, result);
+        });
+    }
+
+    static GetStatisticToken(callback){
+        let query = 
+            `select count(*) as total_token, StatusToken 
+                from FacebookDb.fb_tokens 
+            where StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD}) 
+            group by StatusToken;`
+
+        connection.query(query,  function(err, result){
+            if(err){
+                callback(err, null);
+                return;
+            }
+
+            return callback(null, result);
+        });
+    }
+
     static GetTokenByUser(userName, callback){
         let query = `Select id, FanPageName, Token_type from FacebookDb.fb_tokens where User = ? and StatusToken = ${CHANGE_PASSWORD} order by Token_type desc;`;
 

@@ -5,7 +5,8 @@ const col = [
         width: 120,
         source: [
             {id: 1, name: "YT", text: "1: YT"},
-            {id: 2, name: "Tiktok", text: "2: tiktok"}
+            {id: 2, name: "Tiktok All In One", text: "2: Tiktok All In One"},
+            {id: 5, name: "Tiktok Scraper2", text: "3: Tiktok Scraper2"}
         ],
         name: "typeToken"
     },
@@ -131,7 +132,7 @@ function Save() {
 function SaveTokenYt_Tiktok()
 {
     let data = filterDataToSave(mySpreadsheet2.getJson());
-    console.log("data: ", data);
+    console.log("data: ", mySpreadsheet2.getJson());
     
     if(data.length == 0)
     {

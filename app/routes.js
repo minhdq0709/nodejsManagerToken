@@ -1,6 +1,9 @@
 "use strict"
 const { json } = require("body-parser");
 const { Token, ManagerToken } = require("../Model/Token");
+const USER_LIVE = 1;
+const USER_DIE = 100;
+const CHANGE_PASSWORD = 101;
 
 module.exports = function (app, passport) {
 
@@ -32,6 +35,10 @@ module.exports = function (app, passport) {
 
 	app.get('/user_die', isLoggedIn, function (req, res) {
 		res.render('user_die.ejs');
+	});
+
+	app.get('/statistic', isLoggedIn, function (req, res) {
+		res.render('statistic.ejs');
 	});
 
 	app.get('/home', isLoggedIn, function (req, res) {
@@ -272,6 +279,42 @@ module.exports = function (app, passport) {
 			else {
 				jsonData.status = 200;
 				jsonData.Mess = "Thành công";
+			}
+
+			res.json(jsonData);
+		});
+	});
+
+	app.get('/GetTokenByManager/:manager', function (req, res) {
+		let manager = req.params.manager;
+		
+		ManagerToken.GetTokenByManager(manager, (err, data) => {
+			let jsonData = {};
+
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = data;
+			}
+
+			res.json(jsonData);
+		});
+	});
+
+	app.get('/StatisticToken', function (req, res) {
+		ManagerToken.GetStatisticToken((err, data) => {
+			let jsonData = {};
+
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = data;
 			}
 
 			res.json(jsonData);
