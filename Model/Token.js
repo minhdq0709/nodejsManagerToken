@@ -120,6 +120,7 @@ class ManagerToken{
                 from FacebookDb.fb_tokens
             where manager = '${manager}'
                 and MONTH(datetime_create_token) = MONTH(now())
+                and YEAR(datetime_create_token) = YEAR(now())
                 and StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD})
             union
             select count(*) as totalToken
