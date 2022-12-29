@@ -320,6 +320,25 @@ module.exports = function (app, passport) {
 			res.json(jsonData);
 		});
 	});
+
+	app.get('/StatisticTokenByManager/:manager', function (req, res) {
+		let manager = req.params.manager;
+
+		ManagerToken.GetStatisticTokenByManager(manager, (err, data) => {
+			let jsonData = {};
+
+			if (err) {
+				jsonData.status = 500;
+				jsonData.Mess = "Có lỗi xảy ra";
+			}
+			else {
+				jsonData.status = 200;
+				jsonData.Mess = data;
+			}
+
+			res.json(jsonData);
+		});
+	});
 };
 
 function isLoggedIn(req, res, next) {

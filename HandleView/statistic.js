@@ -1,6 +1,6 @@
-function LoadDataForChartPersonal() {
+function LoadDataForChartPersonal(manager) {
     $.ajax({
-        url: "/GetTokenByManager/" + getCookie("cookiename"),
+        url: `/GetTokenByManager/${manager}`,
         type: "GET",
         cache: false,
         contentType: "application/json;charset=utf-8",
@@ -19,7 +19,7 @@ function LoadDataForChartPersonal() {
                     yValues[1] = result.Mess[1].tokenInMonth;
                 }
 
-                let barColors = ["red", "blue"];
+                let barColors = ["green", "blue"];
 
                 new Chart("myChartPersonal", {
                     type: "bar",
@@ -47,7 +47,6 @@ function LoadDataForChartPersonal() {
                             display: false
                         },
                         animation: {
-                            duration: 1,
                             onComplete: function () {
                                 let chartInstance = this.chart;
                                 let ctx = chartInstance.ctx;
@@ -112,7 +111,6 @@ function LoadDataForChartTeamCrawler() {
                             yValues[2] = element.total_token;
                         }
                     });
-
                 }
 
                 let barColors = ["blue", "red", "green"];
@@ -182,9 +180,54 @@ function LoadDataForChartTeamCrawler() {
     });
 }
 
+function LoadStatusTokenByManager(manager) {
+    $.ajax({
+        url: `/StatisticTokenByManager/${manager}`,
+        type: "GET",
+        cache: false,
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            if (result.status == 200) {
+                if(result.Mess.length){
+                    let totalTokenBymanager = 0;
+
+                    result.Mess.forEach(element => {
+                        if(element.StatusToken == 1){
+                            $('#txtUserLive').text(`${element.token}`);
+                            totalTokenBymanager += element.token;
+                        }
+
+                        else if(element.StatusToken == 100){
+                            $('#txtUserDie').text(`${element.token}`);
+                            totalTokenBymanager += element.token;
+                        }
+
+                        else if(element.StatusToken == 101){
+                            $('#txtChangePassword').text(`${element.token}`);
+                            totalTokenBymanager += element.token;
+                        }
+                    });
+
+                    $('#txtTotalToken').text(`${totalTokenBymanager}`);
+                }
+                return;
+            }
+            else {
+                $.notify("Có lỗi xảy ra !!!", "error");
+                return;
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
 $(document).ready(function () {
-    LoadDataForChartPersonal();
+    LoadDataForChartPersonal(getCookie("cookiename"));
     LoadDataForChartTeamCrawler();
+    LoadStatusTokenByManager(getCookie("cookiename"))
 });
 
 function getCookie(cname) {

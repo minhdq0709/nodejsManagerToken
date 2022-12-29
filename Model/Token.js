@@ -155,6 +155,24 @@ class ManagerToken{
         });
     }
 
+    static GetStatisticTokenByManager(manager, callback){
+        let query = 
+            `select count(*) as token, StatusToken
+                from FacebookDb.fb_tokens
+            where Manager = '${manager}'
+                and StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD})
+            group by StatusToken;`
+
+        connection.query(query,  function(err, result){
+            if(err){
+                callback(err, null);
+                return;
+            }
+
+            return callback(null, result);
+        });
+    }
+
     static GetTokenByUser(userName, callback){
         let query = `Select id, FanPageName, Token_type from FacebookDb.fb_tokens where User = ? and StatusToken = ${CHANGE_PASSWORD} order by Token_type desc;`;
 

@@ -23,6 +23,25 @@
             align-items: center;
             justify-content: center;
         }
+
+        .rowStyle{
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        .device {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+
+        .device  .group1{
+            display: flex;
+            flex-basis: 50%;
+            justify-content: space-evenly;
+
+        }
+
     </style>
 </head>
 
@@ -50,6 +69,50 @@
                         <h5 class="title-chart">Team Crawler</h5>
                         <div class="chart-left">
                             <canvas id="myChartTeamCrawler" style="width:100%; max-width:800px"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top:1%;">
+                    <div class="col-lg-6 ">
+                        <h5 class="title-chart">Hiện trạng cá nhân</h5>
+                        <div class="rowStyle">
+                            <div class="device">
+                                <div class="group1">
+                                    <div class="labelKey">
+                                        Tổng số token:
+                                    </div>
+                                    <div class="val">
+                                        <b id="txtTotalToken">0</b>
+                                    </div>
+                                </div>
+                                <div class="group1">
+                                    <div class="labelKey">
+                                        Số token sống:
+                                    </div>
+                                    <div class="val">
+                                        <b id="txtUserLive">0</b>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="device">
+                                <div class="group1">
+                                    <div class="labelKey">
+                                        Số user die:
+                                    </div>
+                                    <div class="val">
+                                        <b id="txtUserDie">0</b>
+                                    </div>
+                                </div>
+                                <div class="group1">
+                                    <div class="labelKey">
+                                        Lấy lại token:
+                                    </div>
+                                    <div class="val">
+                                        <b id="txtChangePassword">0</b>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
