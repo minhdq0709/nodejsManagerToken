@@ -3,7 +3,7 @@ const mysql = require('mysql');
 const moment = require('moment');
 const dbconfig = require('../config/database.js');
 
-const connection = mysql.createConnection(dbconfig.connection2);
+const connection = mysql.createConnection(dbconfig.connection3);
 const USER_LIVE = 1;
 const USER_DIE = 100;
 const CHANGE_PASSWORD = 101;
@@ -143,24 +143,6 @@ class ManagerToken{
             `select count(*) as total_token, StatusToken 
                 from FacebookDb.fb_tokens 
             where StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD}) 
-            group by StatusToken;`
-
-        connection.query(query,  function(err, result){
-            if(err){
-                callback(err, null);
-                return;
-            }
-
-            return callback(null, result);
-        });
-    }
-
-    static GetStatisticTokenByManager(manager, callback){
-        let query = 
-            `select count(*) as token, StatusToken
-                from FacebookDb.fb_tokens
-            where Manager = '${manager}'
-                and StatusToken in (${USER_LIVE}, ${USER_DIE}, ${CHANGE_PASSWORD})
             group by StatusToken;`
 
         connection.query(query,  function(err, result){

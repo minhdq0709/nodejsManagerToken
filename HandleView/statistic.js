@@ -94,26 +94,30 @@ function LoadDataForChartTeamCrawler() {
         dataType: "json",
         success: function (result) {
             if (result.status == 200) {
-                let xValues = ["Token sống", "User die", "Lấy lại token"];
+                let xValues = ["Tổng số token", "Token sống", "User die", "Lấy lại token"];
                 let yValues = [];
-
+                let totalToken = 0;
+                
                 if(result.Mess.length != 0){
                     result.Mess.forEach(element => {
+                        totalToken += element.total_token;
+                        
                         if(element.StatusToken == 1){
-                            yValues[0] = element.total_token;
-                        }
-
-                        else if(element.StatusToken == 100){
                             yValues[1] = element.total_token;
                         }
 
-                        else if(element.StatusToken == 101){
+                        else if(element.StatusToken == 100){
                             yValues[2] = element.total_token;
+                        }
+
+                        else if(element.StatusToken == 101){
+                            yValues[3] = element.total_token;
                         }
                     });
                 }
 
-                let barColors = ["blue", "red", "green"];
+                yValues[0] = totalToken;
+                let barColors = ["purple", "blue", "red", "green"];
 
                 new Chart("myChartTeamCrawler", {
                     type: "bar",

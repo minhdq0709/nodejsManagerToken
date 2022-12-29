@@ -1,9 +1,5 @@
 "use strict"
-const { json } = require("body-parser");
 const { Token, ManagerToken } = require("../Model/Token");
-const USER_LIVE = 1;
-const USER_DIE = 100;
-const CHANGE_PASSWORD = 101;
 
 module.exports = function (app, passport) {
 
@@ -105,7 +101,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/getUserDieByManager/:manager/:statusToken', function (req, res) {
+	app.get('/getUserDieByManager/:manager/:statusToken', isLoggedIn, function (req, res) {
 		let manager = req.params.manager;
 		let statusToken = +req.params.statusToken;
 
@@ -124,7 +120,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/getListAdminByPage/:namePage', function (req, res) {
+	app.get('/getListAdminByPage/:namePage', isLoggedIn, function (req, res) {
 		let namePage = req.params.namePage;
 
 		ManagerToken.GetListAdminByNamePage(namePage, (err, data) => {
@@ -142,7 +138,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/getUserChangePasswordByManager/:manager', function (req, res) {
+	app.get('/getUserChangePasswordByManager/:manager', isLoggedIn, function (req, res) {
 		let manager = req.params.manager;
 
 		ManagerToken.GetListPageBeenChangedPassword(manager, (err, data) => {
@@ -161,7 +157,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/GetTokenById/:id', function (req, res) {
+	app.get('/GetTokenById/:id', isLoggedIn, function (req, res) {
 		let id = req.params.id;
 
 		ManagerToken.GetTokenById(id, (err, data) => {
@@ -180,7 +176,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/GetTokenByUser/:userName', function (req, res) {
+	app.get('/GetTokenByUser/:userName', isLoggedIn, function (req, res) {
 		let userName = req.params.userName;
 
 		ManagerToken.GetTokenByUser(userName, (err, data) => {
@@ -208,7 +204,7 @@ module.exports = function (app, passport) {
 		res.redirect('/');
 	});
 
-	app.post('/updateStatusToken/:statusToken', function (req, res) {
+	app.post('/updateStatusToken/:statusToken', isLoggedIn, function (req, res) {
 		let listUserName = req.body.mess;
 		let statusToken = +req.params.statusToken;
 
@@ -228,7 +224,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.post('/updatePasswordByUsername', function (req, res) {
+	app.post('/updatePasswordByUsername', isLoggedIn, function (req, res) {
 		let data = req.body;
 
 		ManagerToken.UpdatePasswordByUseName(data.UserName, data.Password, (err, data) => {
@@ -247,7 +243,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.post('/updateTokenById', function (req, res) {
+	app.post('/updateTokenById', isLoggedIn, function (req, res) {
 		let data = req.body;
 
 		ManagerToken.UpdateTokenById(data.Token, data.Id, (err, result) => {
@@ -266,7 +262,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.post('/updateListToken', function (req, res) {
+	app.post('/updateListToken', isLoggedIn, function (req, res) {
 		let data = req.body;
 
 		ManagerToken.UpdateListToken(data, (err, result) => {
@@ -285,7 +281,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/GetTokenByManager/:manager', function (req, res) {
+	app.get('/GetTokenByManager/:manager', isLoggedIn, function (req, res) {
 		let manager = req.params.manager;
 		
 		ManagerToken.GetTokenByManager(manager, (err, data) => {
@@ -304,7 +300,7 @@ module.exports = function (app, passport) {
 		});
 	});
 
-	app.get('/StatisticToken', function (req, res) {
+	app.get('/StatisticToken', isLoggedIn, function (req, res) {
 		ManagerToken.GetStatisticToken((err, data) => {
 			let jsonData = {};
 
